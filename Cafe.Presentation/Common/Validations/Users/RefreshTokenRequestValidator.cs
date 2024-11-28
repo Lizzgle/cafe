@@ -1,14 +1,13 @@
 ﻿using Cafe.Presentation.Common.Requests.Users;
 using FluentValidation;
 
-namespace Cafe.Presentation.Common.Validations.Users
+namespace Cafe.Presentation.Common.Validations.Users;
+
+public class RefreshTokenRequestValidator : AbstractValidator<RefreshTokenRequest>
 {
-    public class RefreshTokenRequestValidator : AbstractValidator<RefreshTokenRequest>
+    public RefreshTokenRequestValidator() 
     {
-        public RefreshTokenRequestValidator() 
-        {
-            RuleFor(r => r.RefreshToken).NotEmpty();
-            RuleFor(r => r.Jwt).NotEmpty();
-        }
+        RuleFor(r => r.RefreshToken).NotEmpty();
+        RuleFor(r => r.Jwt).NotEmpty();
     }
 }

@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Cafe.Application.Common.Exceptions;
 
-namespace Cafe.Application.Common.Exceptions
+public class InvalidTokenException : Exception
 {
-    public class InvalidTokenException : Exception
-    {
-        public InvalidTokenException() { }
+    public InvalidTokenException() { }
 
-        public InvalidTokenException(string message) : base(message) { }
-    }
+    public InvalidTokenException(string message) : base(message) { }
 }

@@ -1,0 +1,57 @@
+﻿using AutoMapper;
+using Cafe.Application.Usecases.Users.Commands.DeleteUser;
+using Cafe.Application.Usecases.Users.Commands.UpdateUser;
+using Cafe.Application.Usecases.Users.Queries.GetByIdUser;
+using Cafe.Application.Usecases.Users.Queries.GetUsers;
+using Cafe.Presentation.Common.Requests.Users;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Cafe.Presentation.Controllers;
+
+[Route("api/users")]
+[ApiController]
+public class UsersController(IMediator mediator, IMapper mapper) : ControllerBase
+{
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetUserByIdAsync([FromRoute] Guid id, CancellationToken token)
+    {
+        var request = new GetUserByIdQueryRequest() { Id = id };
+
+        var eventdto = await mediator.Send(request, token);
+
+        return Ok(eventdto);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetUsersAsync(CancellationToken token)
+    {
+        var request = new GetUsersQueryRequest();
+
+        var eventdto = await mediator.Send(request, token);
+
+        return Ok(eventdto);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateUserAsync([FromRoute] Guid id, [FromBody] UpdateRequest request,  CancellationToken token)
+    {
+        var command = mapper.Map<UpdateUserCommandRequest>(request);
+
+        command.Id = id;
+
+        await mediator.Send(command, token);
+
+        return Ok();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteUserAsync([FromRoute] Guid id, CancellationToken token)
+    {
+        var request = new DeleteUserCommandRequest() { Id = id };
+
+        await mediator.Send(request, token);
+
+        return Ok();
+    }
+}

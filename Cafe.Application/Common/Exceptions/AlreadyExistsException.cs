@@ -1,10 +1,9 @@
-﻿namespace Event.Application.Common.Exceptions
-{
-    public class AlreadyExistsException : Exception
-    {
-        public AlreadyExistsException() { }
+﻿namespace Event.Application.Common.Exceptions;
 
-        public AlreadyExistsException(string message) : base(message) { }
-        
-    }
+public class AlreadyExistsException : Exception
+{
+    public AlreadyExistsException() { }
+
+    public AlreadyExistsException(string message) : base(message) { }
+    
 }

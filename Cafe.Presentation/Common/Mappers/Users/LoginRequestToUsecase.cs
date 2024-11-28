@@ -2,13 +2,12 @@
 using Cafe.Application.Usecases.Users.Commands.Login;
 using Cafe.Presentation.Common.Requests.Users;
 
-namespace Cafe.Presentation.Common.Mappers.Users
+namespace Cafe.Presentation.Common.Mappers.Users;
+
+public class LoginRequestToUsecase : Profile
 {
-    public class LoginRequestToUsecase : Profile
+    public LoginRequestToUsecase()
     {
-        public LoginRequestToUsecase()
-        {
-            CreateMap<LoginRequest, LoginCommandRequest>();
-        }
+        CreateMap<LoginRequest, LoginCommandRequest>();
     }
 }

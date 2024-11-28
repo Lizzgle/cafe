@@ -1,35 +1,30 @@
 ﻿using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Cafe.Infrastructure
+namespace Cafe.Infrastructure;
+
+public class DatabaseHelper
 {
-    public class DatabaseHelper
+    public static void CreateDatabase(string connectionString, string databaseName)
     {
-        public static void CreateDatabase(string connectionString, string databaseName)
+        using (SqlConnection connection = new SqlConnection(connectionString))
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
+            connection.Open();
 
-                string createDatabaseQuery = $"CREATE DATABASE {databaseName}";
+            string createDatabaseQuery = $"CREATE DATABASE {databaseName}";
 
-                ExecuteNonQuery(connection, createDatabaseQuery);
-            }
+            ExecuteNonQuery(connection, createDatabaseQuery);
         }
+    }
 
-        public static void CreateUsersTable(string connectionString, string databaseName)
+    public static void CreateUsersTable(string connectionString, string databaseName)
+    {
+        using (SqlConnection connection = new SqlConnection(connectionString))
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
+            connection.Open();
 
-                connection.ChangeDatabase(databaseName);
+            connection.ChangeDatabase(databaseName);
 
-                string createTableQuery = @"
+            string createTableQuery = @"
                     CREATE TABLE Users (
                         Id NVARCHAR(50) PRIMARY KEY,
                         Login NVARCHAR(20) NOT NULL,
@@ -39,17 +34,16 @@ namespace Cafe.Infrastructure
                         RefreshToken NVARCHAR(MAX) NULL,
                         RefreshTokenExpiry DATETIME NULL
                 )";
-                
-                ExecuteNonQuery(connection, createTableQuery);
-            }
+            
+            ExecuteNonQuery(connection, createTableQuery);
         }
+    }
 
-        private static void ExecuteNonQuery(SqlConnection connection, string query)
+    private static void ExecuteNonQuery(SqlConnection connection, string query)
+    {
+        using (SqlCommand command = new SqlCommand(query, connection))
         {
-            using (SqlCommand command = new SqlCommand(query, connection))
-            {
-                command.ExecuteNonQuery();
-            }
+            command.ExecuteNonQuery();
         }
     }
 }
