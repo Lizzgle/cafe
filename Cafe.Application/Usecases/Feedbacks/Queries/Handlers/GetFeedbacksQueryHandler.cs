@@ -14,11 +14,11 @@ internal class GetFeedbacksQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
 
     public async Task<List<ShortFeedbackDto>> Handle(GetFeedbacksQueryRequest request, CancellationToken cancellationToken)
     {
-        var feedbacks = await _feedbackRepository.GetAllFeedbacksAsync(cancellationToken);
+        var feedbacks = await _feedbackRepository.GetAllAsync(cancellationToken);
 
         foreach (var feedback in feedbacks)
         {
-            feedback.User = await _userRepository.GetUserByIdAsync(feedback.UserId);
+            feedback.User = await _userRepository.GetByIdAsync(feedback.UserId, cancellationToken);
         }
        
         return mapper.Map<List<ShortFeedbackDto>>(feedbacks);

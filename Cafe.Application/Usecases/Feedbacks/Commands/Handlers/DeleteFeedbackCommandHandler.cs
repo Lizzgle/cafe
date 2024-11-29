@@ -12,13 +12,13 @@ internal class DeleteFeedbackCommandHandler(IUnitOfWork unitOfWork)
 
     public async Task Handle(DeleteFeedbackCommandRequest request, CancellationToken cancellationToken)
     {
-        var feedback = await _feedbackRepository.GetFeedbackByIdAsync(request.Id);
+        var feedback = await _feedbackRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (feedback is null)
         {
             throw new NotFoundException(ExceptionMessages.FeedbackNotFound);
         }
 
-        await _feedbackRepository.DeleteFeedbackAsync(feedback);
+        await _feedbackRepository.DeleteAsync(feedback, cancellationToken);
     }
 }

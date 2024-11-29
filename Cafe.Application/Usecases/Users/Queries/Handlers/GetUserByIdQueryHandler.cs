@@ -14,7 +14,7 @@ public class GetUserByIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
 
     public async Task<UserDto> Handle(GetUserByIdQueryRequest request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetUserByIdAsync(request.Id);
+        var user = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (user == null)
         {

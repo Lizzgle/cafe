@@ -13,7 +13,7 @@ public class GetUsersQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
 
     public async Task<List<ShortUserDto>> Handle(GetUsersQueryRequest request, CancellationToken cancellationToken)
     {
-        var users = await _userRepository.GetAllUsersAsync(cancellationToken);
+        var users = await _userRepository.GetAllAsync(cancellationToken);
 
         return mapper.Map<List<ShortUserDto>>(users);
     }

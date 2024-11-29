@@ -10,4 +10,7 @@ public class ExceptionMessages
     public const string RefreshTokenIsNotValid = "Refresh token is not valid";
 
     public const string FeedbackNotFound = "Feedback not found";
+
+    public const string DessertNotFound = "Dessert not found";
+    public const string DessertAlreadyExists = "Dessert with this name already exists";
 }

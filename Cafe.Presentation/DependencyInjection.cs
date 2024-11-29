@@ -110,6 +110,12 @@ public static class DependencyInjection
                 policy.RequireRole(Role.Admin.ToString());
             });
 
+            options.AddPolicy(PolicyTypes.ModeratorPolicy, policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.RequireRole(Role.Moderator.ToString());
+            });
+
             options.AddPolicy(PolicyTypes.ClientPolicy, policy =>
             {
                 policy.RequireAuthenticatedUser();

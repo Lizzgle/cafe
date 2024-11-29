@@ -26,7 +26,7 @@ public class RefreshTokenCommandHandler(IUnitOfWork unitOfWork, IJwtProvider jwt
             throw new InvalidTokenException(ExceptionMessages.InvalidDataInToken);
         }
 
-        User? user = await _userRepository.GetUserByIdAsync(guidId, cancellationToken);
+        User? user = await _userRepository.GetByIdAsync(guidId, cancellationToken);
 
         if (user is null)
         {
@@ -40,7 +40,7 @@ public class RefreshTokenCommandHandler(IUnitOfWork unitOfWork, IJwtProvider jwt
             user.RefreshToken = null;
             user.RefreshTokenExpiry = null;
 
-            await _userRepository.UpdateUserAsync(user, cancellationToken);
+            await _userRepository.UpdateAsync(user, cancellationToken);
 
             throw new InvalidTokenException(ExceptionMessages.RefreshTokenIsNotValid);
         }

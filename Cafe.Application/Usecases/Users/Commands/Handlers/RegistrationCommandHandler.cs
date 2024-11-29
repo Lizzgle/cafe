@@ -16,7 +16,7 @@ public class RegistrationCommandHandler(IUnitOfWork unitOfWork, IJwtProvider jwt
 
     public async Task<RegistrationCommandResponse> Handle(RegistrationCommandRequest request, CancellationToken cancellationToken)
     {
-        if (await _userRepository.GetUserByLogin(request.Login) is not null)
+        if (await _userRepository.GetUserByLogin(request.Login, cancellationToken) is not null)
         {
             throw new AlreadyExistsException(ExceptionMessages.UserAlreadyExists);
         }
@@ -25,7 +25,7 @@ public class RegistrationCommandHandler(IUnitOfWork unitOfWork, IJwtProvider jwt
 
         user.Roles.Add(Role.Client);
 
-        await _userRepository.CreateUserAsync(user);
+        await _userRepository.CreateAsync(user, cancellationToken);
 
         await _userRepository.AddRoleToUserAsync(user, Role.Client);
 
@@ -35,7 +35,7 @@ public class RegistrationCommandHandler(IUnitOfWork unitOfWork, IJwtProvider jwt
         user.RefreshToken = refresh;
         user.RefreshTokenExpiry = DateTime.UtcNow.AddDays(1);
 
-        await _userRepository.UpdateUserAsync(user, cancellationToken);
+        await _userRepository.UpdateAsync(user, cancellationToken);
 
         return new() { JwtToken = jwt, RefreshToken = refresh };
     }

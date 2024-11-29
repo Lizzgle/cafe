@@ -17,6 +17,6 @@ public class CreateFeedbackCommandHandler(IUnitOfWork unitOfWork, IMapper mapper
 
         feedback.Date = DateTime.UtcNow;
 
-        await _feedbackRepository.CreateFeedbackAsync(feedback);
+        await _feedbackRepository.CreateAsync(feedback);
     }
 }

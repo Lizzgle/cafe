@@ -59,13 +59,13 @@ public class ExceptionHandlingMiddleware
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             await context.Response.WriteAsJsonAsync(problemDetails);
         }
-        catch (UnauthorizedAccessException exception)
+        catch (AlreadyExistsException exception)
         {
             var problemDetails = new ProblemDetails
             {
-                Status = StatusCodes.Status401Unauthorized,
+                Status = StatusCodes.Status409Conflict,
                 Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
-                Title = "Invalid token",
+                Title = "The specified resource already exists",
                 Detail = exception.Message
             };
 

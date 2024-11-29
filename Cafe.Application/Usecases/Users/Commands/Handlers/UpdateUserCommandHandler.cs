@@ -12,7 +12,7 @@ public class UpdateUserCommandHandler(IUnitOfWork unitOfWork)
 
     public async Task Handle(UpdateUserCommandRequest request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetUserByIdAsync(request.Id);
+        var user = await _userRepository.GetByIdAsync(request.Id);
 
         if (user is null)
         {
@@ -22,7 +22,7 @@ public class UpdateUserCommandHandler(IUnitOfWork unitOfWork)
         user.Name = request.Name;
         user.DateOfBirth = request.DateOfBirth;
 
-        await _userRepository.UpdateUserAsync(user);
+        await _userRepository.UpdateAsync(user);
 
     }
 }

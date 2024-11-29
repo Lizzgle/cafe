@@ -14,7 +14,7 @@ public class LoginCommandHandler(IUnitOfWork unitOfWork, IJwtProvider jwtProvide
 
     public async Task<LoginCommandResponse> Handle(LoginCommandRequest request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetUserByLoginAndPassword(request.Login, request.Password);
+        var user = await _userRepository.GetUserByLoginAndPassword(request.Login, request.Password, cancellationToken);
 
         if (user is null)
         {
@@ -27,7 +27,7 @@ public class LoginCommandHandler(IUnitOfWork unitOfWork, IJwtProvider jwtProvide
         user.RefreshToken = refresh;
         user.RefreshTokenExpiry = DateTime.UtcNow.AddDays(1);
 
-        await _userRepository.UpdateUserAsync(user);
+        await _userRepository.UpdateAsync(user, cancellationToken);
 
         return new() { JwtToken = jwt, RefreshToken = refresh };
     }

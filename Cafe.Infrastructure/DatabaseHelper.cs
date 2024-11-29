@@ -109,6 +109,28 @@ public class DatabaseHelper
         }
     }
 
+    public static void CreateDessertsTable(string connectionString, string databaseName)
+    {
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+            connection.ChangeDatabase(databaseName);
+
+            string createTableQuery = @"
+            CREATE TABLE desserts (
+                Id NVARCHAR(50) PRIMARY KEY,
+                Name NVARCHAR(100) NOT NULL,
+                Description NVARCHAR(255) NULL,
+                Calories INT NOT NULL,
+                Price FLOAT NOT NULL
+            )";
+
+            ExecuteNonQuery(connection, createTableQuery);
+        }
+    }
+
+
     private static void ExecuteNonQuery(SqlConnection connection, string query)
     {
         using (SqlCommand command = new SqlCommand(query, connection))

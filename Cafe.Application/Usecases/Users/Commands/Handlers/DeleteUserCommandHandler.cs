@@ -12,13 +12,13 @@ public class DeleteUserCommandHandler(IUnitOfWork unitOfWork)
 
     public async Task Handle(DeleteUserCommandRequest request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetUserByIdAsync(request.Id);
+        var user = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (user is null)
         {
             throw new NotFoundException(ExceptionMessages.UserNotFound);
         }
 
-        await _userRepository.DeleteUserAsync(user);
+        await _userRepository.DeleteAsync(user, cancellationToken);
     }
 }
