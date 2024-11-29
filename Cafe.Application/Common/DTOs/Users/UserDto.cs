@@ -1,4 +1,6 @@
-﻿namespace Cafe.Application.Common.DTOs.Users;
+﻿using Cafe.Domain.Entities;
+
+namespace Cafe.Application.Common.DTOs.Users;
 
 public class UserDto
 {
@@ -11,4 +13,6 @@ public class UserDto
     public string? Name { get; set; }
 
     public DateTime DateOfBirth { get; set; }
+
+    public List<Role> Roles { get; set; }
 }

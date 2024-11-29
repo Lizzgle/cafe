@@ -1,9 +1,11 @@
 ﻿using Cafe.Application.Common.Providers;
+using Cafe.Application.Usecases.Users.Commands.Requests;
+using Cafe.Application.Usecases.Users.Commands.Responses;
 using Cafe.Domain.Abstractions;
 using Event.Application.Common.Exceptions;
 using MediatR;
 
-namespace Cafe.Application.Usecases.Users.Commands.Login;
+namespace Cafe.Application.Usecases.Users.Commands.Handlers;
 
 public class LoginCommandHandler(IUnitOfWork unitOfWork, IJwtProvider jwtProvider)
     : IRequestHandler<LoginCommandRequest, LoginCommandResponse>

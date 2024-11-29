@@ -1,8 +1,9 @@
-﻿using Cafe.Domain.Abstractions;
+﻿using Cafe.Application.Usecases.Users.Commands.Requests;
+using Cafe.Domain.Abstractions;
 using Event.Application.Common.Exceptions;
 using MediatR;
 
-namespace Cafe.Application.Usecases.Users.Commands.UpdateUser;
+namespace Cafe.Application.Usecases.Users.Commands.Handlers;
 
 public class UpdateUserCommandHandler(IUnitOfWork unitOfWork)
     : IRequestHandler<UpdateUserCommandRequest>

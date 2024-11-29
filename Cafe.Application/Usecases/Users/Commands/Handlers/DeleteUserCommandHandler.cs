@@ -1,10 +1,11 @@
-﻿using Cafe.Domain.Abstractions;
+﻿using Cafe.Application.Usecases.Users.Commands.Requests;
+using Cafe.Domain.Abstractions;
 using Event.Application.Common.Exceptions;
 using MediatR;
 
-namespace Cafe.Application.Usecases.Users.Commands.DeleteUser;
+namespace Cafe.Application.Usecases.Users.Commands.Handlers;
 
-public class DeleteUserCommandHandler(IUnitOfWork unitOfWork) 
+public class DeleteUserCommandHandler(IUnitOfWork unitOfWork)
     : IRequestHandler<DeleteUserCommandRequest>
 {
     private readonly IUserRepository _userRepository = unitOfWork.UserRepository;
@@ -18,6 +19,6 @@ public class DeleteUserCommandHandler(IUnitOfWork unitOfWork)
             throw new NotFoundException(ExceptionMessages.UserNotFound);
         }
 
-        await  _userRepository.DeleteUserAsync(user);
+        await _userRepository.DeleteUserAsync(user);
     }
 }

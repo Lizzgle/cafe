@@ -1,4 +1,4 @@
-﻿namespace Events.Application.Users.Commands.RefreshToken;
+﻿namespace Cafe.Application.Usecases.Users.Commands.Responses;
 
 public class RefreshTokenCommandResponse
 {

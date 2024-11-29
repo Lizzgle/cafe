@@ -1,14 +1,16 @@
 ﻿using Cafe.Application.Common.Exceptions;
 using Cafe.Application.Common.Providers;
+using Cafe.Application.Usecases.Users.Commands.Requests;
+using Cafe.Application.Usecases.Users.Commands.Responses;
 using Cafe.Domain.Abstractions;
 using Cafe.Domain.Entities;
 using Event.Application.Common.Exceptions;
 using MediatR;
 using System.Security.Claims;
 
-namespace Events.Application.Users.Commands.RefreshToken;
+namespace Cafe.Application.Usecases.Users.Commands.Handlers;
 
-public class RefreshTokenCommandHandler(IUnitOfWork unitOfWork, IJwtProvider jwtProvider) 
+public class RefreshTokenCommandHandler(IUnitOfWork unitOfWork, IJwtProvider jwtProvider)
     : IRequestHandler<RefreshTokenCommandRequest, RefreshTokenCommandResponse>
 {
     private readonly IUserRepository _userRepository = unitOfWork.UserRepository;

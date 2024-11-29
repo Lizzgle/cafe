@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Cafe.Application.Usecases.Users.Commands.Registration;
+using Cafe.Application.Usecases.Users.Commands.Requests;
 using Cafe.Domain.Entities;
 
 namespace Cafe.Application.Common.Mappers.Users;

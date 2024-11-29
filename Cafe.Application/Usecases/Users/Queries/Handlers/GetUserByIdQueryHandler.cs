@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using Cafe.Application.Common.DTOs.Users;
+using Cafe.Application.Usecases.Users.Queries.Requests;
 using Cafe.Domain.Abstractions;
 using Event.Application.Common.Exceptions;
 using MediatR;
 
-namespace Cafe.Application.Usecases.Users.Queries.GetByIdUser;
+namespace Cafe.Application.Usecases.Users.Queries.Handlers;
 
 public class GetUserByIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
     : IRequestHandler<GetUserByIdQueryRequest, UserDto>

@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using Cafe.Application.Common.Providers;
+using Cafe.Application.Usecases.Users.Commands.Requests;
+using Cafe.Application.Usecases.Users.Commands.Responses;
 using Cafe.Domain.Abstractions;
 using Cafe.Domain.Entities;
 using Event.Application.Common.Exceptions;
 using MediatR;
 
-namespace Cafe.Application.Usecases.Users.Commands.Registration;
+namespace Cafe.Application.Usecases.Users.Commands.Handlers;
 
 public class RegistrationCommandHandler(IUnitOfWork unitOfWork, IJwtProvider jwtProvider, IMapper mapper)
     : IRequestHandler<RegistrationCommandRequest, RegistrationCommandResponse>
@@ -16,14 +18,16 @@ public class RegistrationCommandHandler(IUnitOfWork unitOfWork, IJwtProvider jwt
     {
         if (await _userRepository.GetUserByLogin(request.Login) is not null)
         {
-            throw new NotFoundException(ExceptionMessages.UserAlreadyExists);
+            throw new AlreadyExistsException(ExceptionMessages.UserAlreadyExists);
         }
 
         var user = mapper.Map<User>(request);
 
+        user.Roles.Add(Role.Client);
+
         await _userRepository.CreateUserAsync(user);
 
-        user.Roles.Add(Role.Client);
+        await _userRepository.AddRoleToUserAsync(user, Role.Client);
 
         string jwt = jwtProvider.GenerateJwt(user);
         string refresh = jwtProvider.GenerateRefreshToken();

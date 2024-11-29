@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Cafe.Application.Usecases.Users.Commands.UpdateUser;
+namespace Cafe.Application.Usecases.Users.Commands.Requests;
 
 public class UpdateUserCommandRequest : IRequest
 {

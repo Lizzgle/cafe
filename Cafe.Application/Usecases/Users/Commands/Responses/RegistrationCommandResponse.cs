@@ -1,4 +1,4 @@
-﻿namespace Cafe.Application.Usecases.Users.Commands.Registration;
+﻿namespace Cafe.Application.Usecases.Users.Commands.Responses;
 
 public class RegistrationCommandResponse
 {

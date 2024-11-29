@@ -1,6 +1,7 @@
-﻿using MediatR;
+﻿using Cafe.Application.Usecases.Users.Commands.Responses;
+using MediatR;
 
-namespace Events.Application.Users.Commands.RefreshToken;
+namespace Cafe.Application.Usecases.Users.Commands.Requests;
 
 public class RefreshTokenCommandRequest : IRequest<RefreshTokenCommandResponse>
 {

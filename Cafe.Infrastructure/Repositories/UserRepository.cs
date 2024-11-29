@@ -89,7 +89,7 @@ public class UserRepository : IUserRepository
 
         while (await reader.ReadAsync(token))
         {
-            users.Add(MapToEntity(reader));
+            users.Add(MapToEntity(reader, connection));
         }
 
         return users;
@@ -111,7 +111,7 @@ public class UserRepository : IUserRepository
 
         if (await reader.ReadAsync(token))
         {
-            return MapToEntity(reader);
+            return MapToEntity(reader, connection);
         }
 
         return null;
@@ -133,7 +133,7 @@ public class UserRepository : IUserRepository
 
         if (await reader.ReadAsync(token))
         {
-            return MapToEntity(reader);
+            return MapToEntity(reader, connection);
         }
 
         return null;
@@ -156,13 +156,29 @@ public class UserRepository : IUserRepository
 
         if (await reader.ReadAsync(token))
         {
-            return MapToEntity(reader);
+            return MapToEntity(reader, connection);
         }
 
         return null;
     }
 
-    private User MapToEntity(IDataReader reader)
+    public async Task AddRoleToUserAsync(User user, Role role, CancellationToken token)
+    {
+        using var connection = new SqlConnection(_connectionString);
+            
+        await connection.OpenAsync();
+
+        var command = connection.CreateCommand();
+
+        command.CommandText = "INSERT INTO UserRoles (UserId, RoleId) VALUES (@UserId, @RoleId)"; 
+        
+        command.Parameters.AddWithValue("@UserId", user.Id);
+        command.Parameters.AddWithValue("@RoleId", role.Id);
+
+        await command.ExecuteNonQueryAsync(token);
+    }
+
+    private User MapToEntity(IDataReader reader, IDbConnection connection)
     {
         var user = new User
         {
@@ -175,6 +191,39 @@ public class UserRepository : IUserRepository
             RefreshTokenExpiry = reader["RefreshTokenExpiry"] as DateTime?
         };
 
+        user.Roles = GetRolesForUser(user.Id, connection);
+
         return user;
+    }
+
+    private List<Role> GetRolesForUser(Guid userId, IDbConnection connection)
+    {
+        connection.Close();
+
+        var roles = new List<Role>();
+
+      
+        using var command = connection.CreateCommand();
+
+        command.CommandText = "SELECT r.Id, r.Name FROM Roles r " +
+                       "INNER JOIN UserRoles ur ON ur.RoleId = r.Id " +
+                       "WHERE ur.UserId = @UserId"; ;
+
+        command.Parameters.Add(new SqlParameter("@UserId", userId));
+
+        connection.Open();
+        
+        using var reader = command.ExecuteReader();
+
+        while (reader.Read())
+        {
+            var role = new Role(reader.GetOrdinal("Id"), reader.GetString(reader.GetOrdinal("Name")));
+
+            roles.Add(role);
+        }
+
+        //connection.Close();
+
+        return roles;
     }
 }

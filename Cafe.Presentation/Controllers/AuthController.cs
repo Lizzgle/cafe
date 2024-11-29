@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using Cafe.Application.Usecases.Users.Commands.Login;
-using Cafe.Application.Usecases.Users.Commands.Registration;
+using Cafe.Application.Usecases.Users.Commands.Requests;
 using Cafe.Presentation.Common.Requests.Users;
-using Events.Application.Users.Commands.RefreshToken;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using Cafe.Application.Usecases.Users.Commands.Requests;
 using Cafe.Presentation.Common.Requests.Users;
-using Events.Application.Users.Commands.RefreshToken;
 
 namespace Cafe.Presentation.Common.Mappers.Users;
 

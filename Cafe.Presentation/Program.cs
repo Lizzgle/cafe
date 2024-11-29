@@ -1,6 +1,7 @@
 using Cafe.Presentation;
 using Cafe.Application;
 using Cafe.Infrastructure;
+using Cafe.Presentation.Common.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseAuthorization();
 

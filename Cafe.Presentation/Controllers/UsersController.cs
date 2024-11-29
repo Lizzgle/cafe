@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using Cafe.Application.Usecases.Users.Commands.DeleteUser;
-using Cafe.Application.Usecases.Users.Commands.UpdateUser;
-using Cafe.Application.Usecases.Users.Queries.GetByIdUser;
-using Cafe.Application.Usecases.Users.Queries.GetUsers;
+using Cafe.Application.Usecases.Users.Commands.Requests;
+using Cafe.Application.Usecases.Users.Queries.Requests;
 using Cafe.Presentation.Common.Requests.Users;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
