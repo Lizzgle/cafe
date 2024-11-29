@@ -9,10 +9,14 @@ internal class UnitOfWork : IUnitOfWork
 
     private IUserRepository? _users;
 
+    private IFeedbackRepository _feedbacks;
+
     public UnitOfWork(string connectionString)
     {
         _connectionString = connectionString;
     }
 
     public IUserRepository UserRepository => _users ??= new UserRepository(_connectionString);
+
+    public IFeedbackRepository FeedbackRepository => _feedbacks ??= new FeedbackRepository(_connectionString);
 }
