@@ -62,43 +62,6 @@ public class DrinkRepository : BaseRepository<Drink>, IDrinkRepository
         return command;
     }
 
-    public async Task UpdateSizesForDrink(SqlConnection connection, Guid drinkId, List<Size> sizes)
-    {
-        using (var deleteCommand = new SqlCommand("DELETE FROM sizes " +
-            "WHERE Id IN (SELECT SizeId FROM prices WHERE DrinkId = @DrinkId)", connection))
-        {
-            deleteCommand.Parameters.Add(new SqlParameter("@DrinkId", drinkId));
-            deleteCommand.ExecuteNonQuery();
-        }
-    }
-
-    private List<Size> GetSizesForDrink(Guid drinkId, SqlConnection connection)
-    {
-        string query = @"
-                SELECT DISTINCT s.Id, s.Name, s.Volume
-                FROM prices p
-                INNER JOIN sizes s ON p.SizeId = s.Id
-                WHERE p.DrinkId = @DrinkId";
-
-        var sizes = new List<Size>();
-
-        using (var command = new SqlCommand(query, connection))
-        {
-            command.Parameters.AddWithValue("@DrinkId", drinkId);
-
-            using (var reader = command.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    Size size = Size.FromId((int)reader["Id"]);
-                    sizes.Add(size);
-                }
-            }
-        }
-
-        return sizes;
-    }
-
     public async Task<Drink?> GetDrinkByName(string name, CancellationToken token = default)
     {
         using var connection = new SqlConnection(_connectionString);
