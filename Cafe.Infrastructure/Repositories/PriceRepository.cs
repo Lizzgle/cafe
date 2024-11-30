@@ -16,7 +16,16 @@ public class PriceRepository : BaseRepository<Price>, IPriceRepository
 
     public override Price MapToEntity(IDataReader reader)
     {
-        throw new NotImplementedException();
+        var price = new Price
+        {
+            Id = Guid.Parse(reader["id"].ToString()),
+            SizeId = (int)reader["SizeId"],
+            Size = (Size)(int)reader["SizeId"],
+            Cost = Convert.ToSingle(reader["Cost"]),
+            DrinkId = Guid.Parse(reader["DrinkId"].ToString()),
+        };
+
+        return price;
     }
 
     protected override SqlCommand CreateInsertCommand(SqlConnection connection, Price entity)
@@ -38,7 +47,16 @@ public class PriceRepository : BaseRepository<Price>, IPriceRepository
 
     protected override SqlCommand CreateUpdateCommand(SqlConnection connection, Price entity)
     {
-        throw new NotImplementedException();
+        var command = connection.CreateCommand();
+
+        command.CommandText = $"UPDATE {TableName} " +
+            $"SET Cost = @Cost " +
+            $"WHERE Id = @Id";
+
+        command.Parameters.Add(new SqlParameter("@Id", entity.Id));
+        command.Parameters.Add(new SqlParameter("@Cost", entity.Cost));
+
+        return command;
     }
 
     public async Task<List<Price>> GetPricesForDrink(Guid drinkId, CancellationToken token)
@@ -48,7 +66,7 @@ public class PriceRepository : BaseRepository<Price>, IPriceRepository
         await connection.OpenAsync(token);
 
         string query = @"
-                SELECT p.Id, p.Cost, p.SizeId
+                SELECT p.Id, p.Cost, p.SizeId, p.DrinkId
                 FROM prices p
                 WHERE p.DrinkId = @DrinkId";
 
@@ -62,18 +80,37 @@ public class PriceRepository : BaseRepository<Price>, IPriceRepository
             {
                 while (reader.Read())
                 {
-                    prices.Add(new Price
-                    {
-                        Id = Guid.Parse(reader["id"].ToString()),
-                        SizeId = (int)reader["SizeId"],
-                        Size = (Size)(int)reader["SizeId"],
-                        Cost = Convert.ToSingle(reader["Cost"]),
-                        DrinkId = drinkId
-                    });
+                    prices.Add(MapToEntity(reader));
                 }
             }
         }
 
         return prices;
+    }
+
+    public async Task<Price?> GetPriceForDrinkAndSize(Guid drinkId, int sizeId, CancellationToken token)
+    {
+        using var connection = new SqlConnection(_connectionString);
+
+        await connection.OpenAsync(token);
+
+        string query = @"
+            SELECT p.Id, p.Cost, p.SizeId
+            FROM prices p
+            WHERE p.DrinkId = @DrinkId AND p.SizeId = @SizeId";
+        
+        using var command = new SqlCommand(query, connection);
+        
+        command.Parameters.AddWithValue("@DrinkId", drinkId);
+        command.Parameters.AddWithValue("@SizeId", sizeId);
+
+        using var reader = await command.ExecuteReaderAsync(token);
+
+        if (await reader.ReadAsync(token))
+        {
+            return MapToEntity(reader);
+        }
+
+        return null;
     }
 }

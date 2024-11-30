@@ -5,11 +5,11 @@ using Cafe.Domain.Enums;
 
 namespace Cafe.Application.Common.Mappers.Prices;
 
-public class PriceDtoToPrice : Profile
+public class ShortPriceDtoToPrice : Profile
 {
-    public PriceDtoToPrice() 
+    public ShortPriceDtoToPrice() 
     {
-        CreateMap<PriceDto, Price>()
+        CreateMap<ShortPriceDto, Price>()
         .ForMember(dest => dest.Size, opt => opt.MapFrom(src => Size.FromString(src.SizeName))) // Преобразование строки в Size
         .ForMember(dest => dest.SizeId, opt => opt.MapFrom(src => Size.FromString(src.SizeName).Id)); // Установка SizeId
     }

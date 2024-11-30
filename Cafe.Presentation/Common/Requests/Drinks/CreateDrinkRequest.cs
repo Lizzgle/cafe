@@ -10,5 +10,5 @@ public class CreateDrinkRequest
 
     required public string CategoryName { get; set; }
 
-    public List<PriceDto> Prices { get; set; } = new List<PriceDto>();
+    public List<ShortPriceDto> Prices { get; set; } = [];
 }

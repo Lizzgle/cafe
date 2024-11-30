@@ -15,4 +15,9 @@
     <ProjectReference Include="..\Cafe.Domain\Cafe.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Usecases\Prices\Queries\Handlers\" />
+    <Folder Include="Usecases\Prices\Queries\Requests\" />
+  </ItemGroup>
+
 </Project>
