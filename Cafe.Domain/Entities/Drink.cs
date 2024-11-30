@@ -8,9 +8,11 @@ public class Drink : Base
 
     public string? Description { get; set; }
 
-    public Size Size { get; set; }
+    public int CategoryId { get; set; }
 
-    public float Price { get; set; }
+    public Category Category { get; set; }
 
-    public Category? Category { get; set; }
+    public List<Size> Sizes { get; set; } = new List<Size>();
+
+    public List<Price> Prices { get; set; } = new List<Price>();
 }

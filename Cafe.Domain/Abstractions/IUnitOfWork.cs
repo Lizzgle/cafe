@@ -7,4 +7,8 @@ public interface IUnitOfWork
     IFeedbackRepository FeedbackRepository { get; }
 
     IDessertRepository DessertRepository { get; }
+
+    IDrinkRepository DrinkRepository { get; }
+
+    IPriceRepository PriceRepository { get; }
 }

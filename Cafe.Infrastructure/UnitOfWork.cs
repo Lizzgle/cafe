@@ -13,6 +13,10 @@ internal class UnitOfWork : IUnitOfWork
 
     private IDessertRepository? _desserts;
 
+    private IDrinkRepository? _drinks;
+
+    private IPriceRepository? _prices;
+
     public UnitOfWork(string connectionString)
     {
         _connectionString = connectionString;
@@ -23,4 +27,8 @@ internal class UnitOfWork : IUnitOfWork
     public IFeedbackRepository FeedbackRepository => _feedbacks ??= new FeedbackRepository(_connectionString);
 
     public IDessertRepository DessertRepository => _desserts ??= new DessertRepository(_connectionString);
+
+    public IDrinkRepository DrinkRepository => _drinks ??= new DrinkRepository(_connectionString);
+
+    public IPriceRepository PriceRepository => _prices ??= new PriceRepository(_connectionString);
 }

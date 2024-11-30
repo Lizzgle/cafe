@@ -17,7 +17,7 @@ public abstract class BaseRepository<T> : IBaseRepository<T> where T : Base
     public abstract string TableName { get; }
     public abstract T MapToEntity(IDataReader reader);
 
-    public async Task CreateAsync(T entity, CancellationToken token = default)
+    public virtual async Task CreateAsync(T entity, CancellationToken token = default)
     {
         using var connection = new SqlConnection(_connectionString);
 
@@ -55,7 +55,7 @@ public abstract class BaseRepository<T> : IBaseRepository<T> where T : Base
         await command.ExecuteNonQueryAsync(token);
     }
 
-    public async Task<List<T>> GetAllAsync(CancellationToken token = default)
+    public virtual async Task<List<T>> GetAllAsync(CancellationToken token = default)
     {
         var entities = new List<T>();
 
@@ -77,7 +77,7 @@ public abstract class BaseRepository<T> : IBaseRepository<T> where T : Base
         return entities;
     }
 
-    public async Task<T?> GetByIdAsync(Guid id, CancellationToken token = default)
+    public virtual async Task<T?> GetByIdAsync(Guid id, CancellationToken token = default)
     {
         using var connection = new SqlConnection(_connectionString);
 
