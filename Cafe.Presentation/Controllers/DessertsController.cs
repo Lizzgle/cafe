@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cafe.Presentation.Controllers;
 
-[Route("api/deserts")]
+[Route("api/desserts")]
 [ApiController]
 public class DessertsController(IMediator mediator, IMapper mapper) : ControllerBase
 {

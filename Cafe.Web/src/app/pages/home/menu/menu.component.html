@@ -1,0 +1,93 @@
+<div class="menu-container">
+    <div class="container my-5 menu-content">
+      <h1 class="text-center">Menu</h1>
+      <div class="text-right">Drinks</div><br>
+  
+      <!-- Loading State -->
+      <div *ngIf="loading" class="text-center">
+        <p>Loading...</p>
+      </div>
+  
+      <!-- Error State -->
+      <div *ngIf="error" class="alert alert-danger">
+        {{ error }}
+      </div>
+
+      <div class="menu-item th-block">
+        <span class="item-name th"></span>
+        <span class="size-name th">Size</span>
+        <span class="price th">Price</span>
+      </div>
+  
+      <div *ngIf="!loading">
+        <div *ngFor="let item of drinks; let i = index">
+          <!-- Category: показываем, если категория отличается от предыдущего элемента -->
+          <h3 class="category-name" *ngIf="i === 0 || item.categoryName !== drinks[i - 1].categoryName">
+            {{ item.categoryName }}
+          </h3> 
+          <hr>
+          <!-- Item Name: показываем, если название отличается от предыдущего -->
+          <div *ngFor="let price of item.prices; let j = index">
+            <div class="menu-item">
+              <span class="item-name" *ngIf="j === 0; else notFirst">
+                {{ item.name }}
+              </span>
+
+              <ng-template #notFirst>
+                <!-- Это будет отображаться, если j !== 0 -->
+                <span class="item-name"></span>
+              </ng-template>
+
+              <span class="size-name">{{ price.sizeName }}</span>
+              <span class="price">{{ price.cost }} BYN</span>
+            </div>
+            
+          </div>
+          
+        </div>
+        
+      </div>
+
+      <br>
+      <div class="text-right">Desserts</div><br><br>
+
+       <!-- Loading State -->
+       <div *ngIf="loading" class="text-center">
+        <p>Loading...</p>
+      </div>
+  
+      <!-- Error State -->
+      <div *ngIf="error" class="alert alert-danger">
+        {{ error }}
+      </div>
+  
+      <div>
+        
+        <div>
+            <div class="menu-item th-block">
+                <span class="item-name th">Name</span>
+                <span class="description th">Description</span>
+                <span class="calories th">Calories</span>
+                <span class="price th">Price</span>
+              </div>
+          <hr>
+          <div *ngFor="let dessert of desserts; let i = index">
+            <div class="menu-item">
+              <span class="item-name">
+                {{ dessert.name }}
+              </span>
+              <span class="description">{{ dessert.description }}</span>
+              <span class="calories">{{ dessert.calories }} калл</span>
+              <span class="price">{{ dessert.price }} BYN</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+
+
+
+  

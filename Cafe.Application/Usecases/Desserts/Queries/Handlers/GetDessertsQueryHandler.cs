@@ -7,14 +7,14 @@ using MediatR;
 namespace Cafe.Application.Usecases.Desserts.Queries.Handlers;
 
 internal class GetDessertsQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
-    : IRequestHandler<GetDessertsQueryRequest, List<ShortDessertDto>>
+    : IRequestHandler<GetDessertsQueryRequest, List<DessertDto>>
 {
     readonly private IDessertRepository _dessertRepository = unitOfWork.DessertRepository;
 
-    public async Task<List<ShortDessertDto>> Handle(GetDessertsQueryRequest request, CancellationToken cancellationToken)
+    public async Task<List<DessertDto>> Handle(GetDessertsQueryRequest request, CancellationToken cancellationToken)
     {
         var deserts = await _dessertRepository.GetAllAsync(cancellationToken);
 
-        return mapper.Map<List<ShortDessertDto>>(deserts);
+        return mapper.Map<List<DessertDto>>(deserts);
     }
 }

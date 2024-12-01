@@ -17,6 +17,8 @@ public static class DependencyInjection
     {
         services.ConfigureOptions();
 
+        services.ConfigureServices();
+
         services.ConfigureAuthorization(configuration);
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
@@ -66,6 +68,21 @@ public static class DependencyInjection
         });
 
         services.AddScoped<IJwtProvider, JwtProvider>();
+
+        return services;
+    }
+
+    private static IServiceCollection ConfigureServices(this IServiceCollection services)
+    {
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowLocalhost", builder =>
+            {
+                builder.WithOrigins("http://localhost:4200")  // Разрешить доступ с фронтенда
+                       .AllowAnyHeader()
+                       .AllowAnyMethod();
+            });
+        });
 
         return services;
     }
