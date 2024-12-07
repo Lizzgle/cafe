@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuService} from './menu.service';  // Импортируем сервис и типы
+import { MenuService} from '../../../core/services/menu.service';  // Импортируем сервис и типы
 
 interface Price {
   id: string;

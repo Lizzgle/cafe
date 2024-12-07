@@ -4,6 +4,7 @@ using Cafe.Application.Usecases.Users.Queries.Requests;
 using Cafe.Presentation.Common.Requests.Users;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Cafe.Presentation.Controllers;
 
@@ -15,6 +16,18 @@ public class UsersController(IMediator mediator, IMapper mapper) : ControllerBas
     public async Task<IActionResult> GetUserByIdAsync([FromRoute] Guid id, CancellationToken token)
     {
         var request = new GetUserByIdQueryRequest() { Id = id };
+
+        var eventdto = await mediator.Send(request, token);
+
+        return Ok(eventdto);
+    }
+
+    [HttpGet("me")]
+    public async Task<IActionResult> GetMeUserByIdAsync(CancellationToken token)
+    {
+        var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        var request = new GetUserByIdQueryRequest() { Id = Guid.Parse(id) };
 
         var eventdto = await mediator.Send(request, token);
 

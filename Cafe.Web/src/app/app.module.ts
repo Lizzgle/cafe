@@ -1,25 +1,38 @@
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { AppRoutingModule } from './app-routing.module';
+
 import { AppComponent } from './app.component';
-import { MainBannerComponent } from './pages/home/main-banner/main-banner.component';
-import { AboutUsComponent } from './pages/home/about-us/about-us.component';
-import { MenuComponent } from './pages/home/menu/menu.component';
 import { FooterComponent } from './components/footer/footer';
+import { AuthModule } from './pages/auth/auth.module';
+import { HomeModule } from './pages/home/home.module';
+
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { AccountComponent } from './pages/account/account.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MainBannerComponent,
-    AboutUsComponent,
-    MenuComponent,
-    FooterComponent
+    FooterComponent,
+    AccountComponent,
   ],
   imports: [
+    AppRoutingModule,
     BrowserModule, 
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
+    AuthModule,
+    HomeModule,  // Add HomeModule to import the HomeComponent and its children
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true // Указывает, что можно зарегистрировать несколько интерсепторов
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
