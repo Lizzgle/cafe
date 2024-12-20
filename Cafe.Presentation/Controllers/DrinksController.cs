@@ -3,6 +3,7 @@ using Cafe.Application.Usecases.Drinks.Commands.Requests;
 using Cafe.Application.Usecases.Drinks.Queries.Requests;
 using Cafe.Presentation.Common.Requests.Drinks;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cafe.Presentation.Controllers;
@@ -12,6 +13,7 @@ namespace Cafe.Presentation.Controllers;
 public class DrinksController(IMediator mediator, IMapper mapper) : ControllerBase
 {
     [HttpPost]
+    [Authorize(Policy = PolicyTypes.AdminPolicy)]
     public async Task<IActionResult> CreateDrinkAsync([FromBody] CreateDrinkRequest request, CancellationToken token = default)
     {
         var command = mapper.Map<CreateDrinkCommandRequest>(request);
@@ -22,6 +24,7 @@ public class DrinksController(IMediator mediator, IMapper mapper) : ControllerBa
     }
 
     [HttpPut("{id}")]
+    [Authorize(Policy = PolicyTypes.AdminPolicy)]
     public async Task<IActionResult> UpdateDrinkAsync([FromRoute] Guid id, [FromBody] UpdateDrinkRequest request, CancellationToken token)
     {
         var command = mapper.Map<UpdateDrinkCommandRequest>(request);
@@ -54,6 +57,7 @@ public class DrinksController(IMediator mediator, IMapper mapper) : ControllerBa
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Policy = PolicyTypes.AdminPolicy)]
     public async Task<IActionResult> DeleteDrinkAsync([FromRoute] Guid id, CancellationToken token)
     {
         var request = new DeleteDrinkCommandRequest() { Id = id };

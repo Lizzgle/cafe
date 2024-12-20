@@ -1,6 +1,5 @@
 ﻿using Cafe.Domain.Abstractions;
 using Cafe.Domain.Entities;
-using Cafe.Domain.Enums;
 using Microsoft.Data.SqlClient;
 using System.Data;
 

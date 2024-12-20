@@ -13,4 +13,6 @@ public interface IUnitOfWork
     IPriceRepository PriceRepository { get; }
 
     IFAQRepository FAQRepository { get; }
+
+    IIngredientRepository IngredientRepository { get; }
 }

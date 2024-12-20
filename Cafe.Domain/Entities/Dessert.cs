@@ -9,4 +9,6 @@ public class Dessert : Base
     public int Calories { get; set; }
 
     public float Price { get; set; }
+
+    public List<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
 }

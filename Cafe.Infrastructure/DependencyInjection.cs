@@ -26,6 +26,10 @@ public static class DependencyInjection
         // DatabaseHelper.CreatePricesTable(createConnectionString, "CafeDb");
         // DatabaseHelper.CreateFAQsTable(createConnectionString, "CafeDb");
 
+        // DatabaseHelper.CreateIngredientsTable(createConnectionString, "CafeDb");
+        // DatabaseHelper.CreateDessertsIngredientsTable(createConnectionString, "CafeDb");
+        // DatabaseHelper.CreateDrinksIngredientsTable(createConnectionString, "CafeDb");
+
         string connectionString = configuration.GetConnectionString("DefaultConnection")
                                                     ?? throw new ArgumentNullException("Не найдена строка подключения к базе данных");
 

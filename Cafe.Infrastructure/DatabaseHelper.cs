@@ -260,6 +260,66 @@ public class DatabaseHelper
         }
     }
 
+    public static void CreateIngredientsTable(string connectionString, string databaseName)
+    {
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+            connection.ChangeDatabase(databaseName);
+
+            string createTableQuery = @"
+            CREATE TABLE ingredients (
+                Id NVARCHAR(50) PRIMARY KEY,
+                Name NVARCHAR(100) NOT NULL,
+            )";
+
+            ExecuteNonQuery(connection, createTableQuery);
+        }
+    }
+
+    public static void CreateDrinksIngredientsTable(string connectionString, string databaseName)
+    {
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+            connection.ChangeDatabase(databaseName);
+
+            string createTableQuery = @"
+                    CREATE TABLE drinksIngredients (
+                        DrinkId NVARCHAR(50),
+                        IngredientId INT,
+                        PRIMARY KEY (DrinkId, IngredientId),
+                        FOREIGN KEY (DrinkId) REFERENCES users(Id) ON DELETE CASCADE,
+                        FOREIGN KEY (IngredientId) REFERENCES roles(Id) ON DELETE CASCADE
+                )";
+
+            ExecuteNonQuery(connection, createTableQuery);
+        }
+    }
+
+    public static void CreateDessertsIngredientsTable(string connectionString, string databaseName)
+    {
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+            connection.ChangeDatabase(databaseName);
+
+            string createTableQuery = @"
+                    CREATE TABLE dessertsIngredients (
+                        DessertId NVARCHAR(50),
+                        IngredientId INT,
+                        PRIMARY KEY (DessertId, IngredientId),
+                        FOREIGN KEY (DessertId) REFERENCES users(Id) ON DELETE CASCADE,
+                        FOREIGN KEY (IngredientId) REFERENCES roles(Id) ON DELETE CASCADE
+                )";
+
+            ExecuteNonQuery(connection, createTableQuery);
+        }
+    }
+
     private static void ExecuteNonQuery(SqlConnection connection, string query)
     {
         using (SqlCommand command = new SqlCommand(query, connection))

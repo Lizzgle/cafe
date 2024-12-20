@@ -3,44 +3,43 @@ using Cafe.Domain.Entities;
 using Microsoft.Data.SqlClient;
 using System.Data;
 
-namespace Cafe.Infrastructure.Repositories
+namespace Cafe.Infrastructure.Repositories;
+
+public class FAQRepository : IFAQRepository
 {
-    public class FAQRepository : IFAQRepository
+    protected readonly string _connectionString;
+
+    public FAQRepository(string connectionString)
     {
-        protected readonly string _connectionString;
+        _connectionString = connectionString;
+    }
 
-        public FAQRepository(string connectionString)
+    public string TableName => "faqs";
+
+    public FAQ MapToEntity(IDataReader reader)
+    {
+        return (FAQ)(int)reader["Id"];
+    }
+
+    public async Task<List<FAQ>> GetAllAsync(CancellationToken token = default)
+    {
+        var entities = new List<FAQ>();
+
+        using var connection = new SqlConnection(_connectionString);
+
+        await connection.OpenAsync(token);
+
+        var command = connection.CreateCommand();
+
+        command.CommandText = $"SELECT * FROM {TableName}";
+
+        using var reader = await command.ExecuteReaderAsync(token);
+
+        while (await reader.ReadAsync(token))
         {
-            _connectionString = connectionString;
+            entities.Add(MapToEntity(reader));
         }
 
-        public string TableName => "faqs";
-
-        public FAQ MapToEntity(IDataReader reader)
-        {
-            return (FAQ)(int)reader["Id"];
-        }
-
-        public async Task<List<FAQ>> GetAllAsync(CancellationToken token = default)
-        {
-            var entities = new List<FAQ>();
-
-            using var connection = new SqlConnection(_connectionString);
-
-            await connection.OpenAsync(token);
-
-            var command = connection.CreateCommand();
-
-            command.CommandText = $"SELECT * FROM {TableName}";
-
-            using var reader = await command.ExecuteReaderAsync(token);
-
-            while (await reader.ReadAsync(token))
-            {
-                entities.Add(MapToEntity(reader));
-            }
-
-            return entities;
-        }
+        return entities;
     }
 }

@@ -1,23 +1,20 @@
-﻿using Cafe.Application.Usecases.Desserts.Queries.Requests;
-using Cafe.Application.Usecases.FAQs.Queries;
+﻿using Cafe.Application.Usecases.FAQs.Queries;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cafe.Presentation.Controllers
+namespace Cafe.Presentation.Controllers;
+
+[Route("api/faqs")]
+[ApiController]
+public class FAQsController(IMediator mediator) : ControllerBase
 {
-    [Route("api/faqs")]
-    [ApiController]
-    public class FAQsController(IMediator mediator) : ControllerBase
+    [HttpGet]
+    public async Task<IActionResult> GetFAQsAsync(CancellationToken token)
     {
-        [HttpGet]
-        public async Task<IActionResult> GetFAQsAsync(CancellationToken token)
-        {
-            var request = new GetFAQsQueryRequest();
+        var request = new GetFAQsQueryRequest();
 
-            var faqs = await mediator.Send(request, token);
+        var faqs = await mediator.Send(request, token);
 
-            return Ok(faqs);
-        }
+        return Ok(faqs);
     }
 }
