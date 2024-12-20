@@ -320,6 +320,104 @@ public class DatabaseHelper
         }
     }
 
+    public static void CreateLogTable(string connectionString, string databaseName)
+    {
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            connection.ChangeDatabase(databaseName);
+
+            string createLogTableQuery = @"
+            CREATE TABLE feedbackLogs (
+                LogId INT IDENTITY(1,1) PRIMARY KEY,
+                UserId NVARCHAR(50) NOT NULL,
+                Action NVARCHAR(50) NOT NULL,
+                ActionTime DATETIME DEFAULT GETDATE(),
+                FOREIGN KEY (UserId) REFERENCES users(Id)
+            )";
+
+            ExecuteNonQuery(connection, createLogTableQuery);
+        }
+    }
+
+    public static void CreateLogTrigger(string connectionString, string databaseName)
+    {
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            connection.ChangeDatabase(databaseName);
+
+            string createTriggerQuery = @"
+           CREATE OR ALTER TRIGGER LogFeedbackActions
+ON feedbacks
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Логирование операций INSERT
+    INSERT INTO feedbackLogs (UserId, Action, ActionTime)
+    SELECT 
+        i.UserId,
+        'INSERT' AS Action,
+        GETDATE() AS ActionTime
+    FROM inserted i
+    WHERE EXISTS (SELECT 1 FROM users WHERE Id = i.UserId);
+
+    -- Логирование операций UPDATE
+    INSERT INTO feedbackLogs (UserId, Action, ActionTime)
+    SELECT 
+        i.UserId,
+        'UPDATE' AS Action,
+        GETDATE() AS ActionTime
+    FROM inserted i
+    JOIN deleted d ON i.Id = d.Id
+    WHERE EXISTS (SELECT 1 FROM users WHERE Id = i.UserId);
+
+    -- Логирование операций DELETE
+    INSERT INTO feedbackLogs (UserId, Action, ActionTime)
+    SELECT 
+        d.UserId,
+        'DELETE' AS Action,
+        GETDATE() AS ActionTime
+    FROM deleted d
+    WHERE EXISTS (SELECT 1 FROM users WHERE Id = d.UserId);
+END;
+";
+
+            ExecuteNonQuery(connection, createTriggerQuery);
+        }
+    }
+
+    public static void CreatePartialSearchIngredientFunction(string connectionString, string databaseName)
+    {
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            connection.ChangeDatabase(databaseName);
+
+            string createFunctionQuery = @"
+        CREATE FUNCTION PartialSearchIngredient(@partialName NVARCHAR(100))
+        RETURNS @result TABLE (
+            Id NVARCHAR(50),
+            Name NVARCHAR(100)
+        )
+        AS
+        BEGIN
+            INSERT INTO @result
+            SELECT i.Id, i.Name
+            FROM ingredients AS i
+            WHERE i.Name LIKE '%' + @partialName + '%';
+
+            RETURN;
+        END;";
+
+            ExecuteNonQuery(connection, createFunctionQuery);
+        }
+    }
+
+
+
     private static void ExecuteNonQuery(SqlConnection connection, string query)
     {
         using (SqlCommand command = new SqlCommand(query, connection))
