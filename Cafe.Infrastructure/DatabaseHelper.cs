@@ -229,6 +229,37 @@ public class DatabaseHelper
         }
     }
 
+    public static void CreateFAQsTable(string connectionString, string databaseName)
+    {
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+            connection.ChangeDatabase(databaseName);
+
+            string createTableQuery = @"
+                CREATE TABLE faqs (
+                    Id INT PRIMARY KEY,
+                    Question NVARCHAR(100) NOT NULL,
+                    Answer NVARCHAR(200) NOT NULL,
+                )";
+
+            ExecuteNonQuery(connection, createTableQuery);
+
+            string insertCategoriesQuery = @"
+            INSERT INTO faqs (Id, Question, Answer) 
+            VALUES 
+            (1, 'Можно ли придти с собакой в кафе?', 'Да, можно наше заведение dogfriendly.'),
+            (2, 'Какое время работы вашего заведение', 'Мы открыты с 10:00 до 22:00.'),
+            (3, 'Есть ли альтернативное молоко?', 'Да, у нас есть кокосовое, миндальное и пшеничное.'),
+            (4, 'Можно ли у вас провести мероприятие?', 'Да, вы можете заранее оповестить и забронировать кафе на проведение мероприятия.'),
+            (5, 'Можно ли придти к вам с ноутбуком?', 'Да, вы можете купить в нашем заведении любой напиток или дессерт и сидеть в ноутбуке.'),
+            (6, 'Как устроиться к вам работать', 'Вы можете обратиться по номеру телефона или подойти к сотрудникам нашего заведение.')";
+
+            ExecuteNonQuery(connection, insertCategoriesQuery);
+        }
+    }
+
     private static void ExecuteNonQuery(SqlConnection connection, string query)
     {
         using (SqlCommand command = new SqlCommand(query, connection))
