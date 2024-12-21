@@ -15,4 +15,6 @@ public class Drink : Base
     public List<Size> Sizes { get; set; } = new List<Size>();
 
     public List<Price> Prices { get; set; } = new List<Price>();
+
+    public List<Ingredient> Ingredients { get; set;} = new List<Ingredient>();
 }

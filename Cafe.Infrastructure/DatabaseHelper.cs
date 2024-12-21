@@ -229,6 +229,195 @@ public class DatabaseHelper
         }
     }
 
+    public static void CreateFAQsTable(string connectionString, string databaseName)
+    {
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+            connection.ChangeDatabase(databaseName);
+
+            string createTableQuery = @"
+                CREATE TABLE faqs (
+                    Id INT PRIMARY KEY,
+                    Question NVARCHAR(100) NOT NULL,
+                    Answer NVARCHAR(200) NOT NULL,
+                )";
+
+            ExecuteNonQuery(connection, createTableQuery);
+
+            string insertCategoriesQuery = @"
+            INSERT INTO faqs (Id, Question, Answer) 
+            VALUES 
+            (1, 'Можно ли придти с собакой в кафе?', 'Да, можно наше заведение dogfriendly.'),
+            (2, 'Какое время работы вашего заведение', 'Мы открыты с 10:00 до 22:00.'),
+            (3, 'Есть ли альтернативное молоко?', 'Да, у нас есть кокосовое, миндальное и пшеничное.'),
+            (4, 'Можно ли у вас провести мероприятие?', 'Да, вы можете заранее оповестить и забронировать кафе на проведение мероприятия.'),
+            (5, 'Можно ли придти к вам с ноутбуком?', 'Да, вы можете купить в нашем заведении любой напиток или дессерт и сидеть в ноутбуке.'),
+            (6, 'Как устроиться к вам работать', 'Вы можете обратиться по номеру телефона или подойти к сотрудникам нашего заведение.')";
+
+            ExecuteNonQuery(connection, insertCategoriesQuery);
+        }
+    }
+
+    public static void CreateIngredientsTable(string connectionString, string databaseName)
+    {
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+            connection.ChangeDatabase(databaseName);
+
+            string createTableQuery = @"
+            CREATE TABLE ingredients (
+                Id NVARCHAR(50) PRIMARY KEY,
+                Name NVARCHAR(100) NOT NULL,
+            )";
+
+            ExecuteNonQuery(connection, createTableQuery);
+        }
+    }
+
+    public static void CreateDrinksIngredientsTable(string connectionString, string databaseName)
+    {
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+            connection.ChangeDatabase(databaseName);
+
+            string createTableQuery = @"
+                    CREATE TABLE drinksIngredients (
+                        DrinkId NVARCHAR(50),
+                        IngredientId INT,
+                        PRIMARY KEY (DrinkId, IngredientId),
+                        FOREIGN KEY (DrinkId) REFERENCES users(Id) ON DELETE CASCADE,
+                        FOREIGN KEY (IngredientId) REFERENCES roles(Id) ON DELETE CASCADE
+                )";
+
+            ExecuteNonQuery(connection, createTableQuery);
+        }
+    }
+
+    public static void CreateDessertsIngredientsTable(string connectionString, string databaseName)
+    {
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+            connection.ChangeDatabase(databaseName);
+
+            string createTableQuery = @"
+                    CREATE TABLE dessertsIngredients (
+                        DessertId NVARCHAR(50),
+                        IngredientId INT,
+                        PRIMARY KEY (DessertId, IngredientId),
+                        FOREIGN KEY (DessertId) REFERENCES users(Id) ON DELETE CASCADE,
+                        FOREIGN KEY (IngredientId) REFERENCES roles(Id) ON DELETE CASCADE
+                )";
+
+            ExecuteNonQuery(connection, createTableQuery);
+        }
+    }
+
+    public static void CreateLogTable(string connectionString, string databaseName)
+    {
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            connection.ChangeDatabase(databaseName);
+
+            string createLogTableQuery = @"
+            CREATE TABLE feedbackLogs (
+                LogId INT IDENTITY(1,1) PRIMARY KEY,
+                UserId NVARCHAR(50) NOT NULL,
+                Action NVARCHAR(50) NOT NULL,
+                ActionTime DATETIME DEFAULT GETDATE(),
+                FOREIGN KEY (UserId) REFERENCES users(Id)
+            )";
+
+            ExecuteNonQuery(connection, createLogTableQuery);
+        }
+    }
+
+    public static void CreateLogTrigger(string connectionString, string databaseName)
+    {
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            connection.ChangeDatabase(databaseName);
+
+            string createTriggerQuery = @"
+           CREATE OR ALTER TRIGGER LogFeedbackActions
+ON feedbacks
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Логирование операций INSERT
+    INSERT INTO feedbackLogs (UserId, Action, ActionTime)
+    SELECT 
+        i.UserId,
+        'INSERT' AS Action,
+        GETDATE() AS ActionTime
+    FROM inserted i
+    WHERE EXISTS (SELECT 1 FROM users WHERE Id = i.UserId);
+
+    -- Логирование операций UPDATE
+    INSERT INTO feedbackLogs (UserId, Action, ActionTime)
+    SELECT 
+        i.UserId,
+        'UPDATE' AS Action,
+        GETDATE() AS ActionTime
+    FROM inserted i
+    JOIN deleted d ON i.Id = d.Id
+    WHERE EXISTS (SELECT 1 FROM users WHERE Id = i.UserId);
+
+    -- Логирование операций DELETE
+    INSERT INTO feedbackLogs (UserId, Action, ActionTime)
+    SELECT 
+        d.UserId,
+        'DELETE' AS Action,
+        GETDATE() AS ActionTime
+    FROM deleted d
+    WHERE EXISTS (SELECT 1 FROM users WHERE Id = d.UserId);
+END;
+";
+
+            ExecuteNonQuery(connection, createTriggerQuery);
+        }
+    }
+
+    public static void CreatePartialSearchIngredientFunction(string connectionString, string databaseName)
+    {
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            connection.ChangeDatabase(databaseName);
+
+            string createFunctionQuery = @"
+        CREATE FUNCTION PartialSearchIngredient(@partialName NVARCHAR(100))
+        RETURNS @result TABLE (
+            Id NVARCHAR(50),
+            Name NVARCHAR(100)
+        )
+        AS
+        BEGIN
+            INSERT INTO @result
+            SELECT i.Id, i.Name
+            FROM ingredients AS i
+            WHERE i.Name LIKE '%' + @partialName + '%';
+
+            RETURN;
+        END;";
+
+            ExecuteNonQuery(connection, createFunctionQuery);
+        }
+    }
+
+
+
     private static void ExecuteNonQuery(SqlConnection connection, string query)
     {
         using (SqlCommand command = new SqlCommand(query, connection))

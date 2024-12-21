@@ -6,6 +6,7 @@ public class ExceptionMessages
     public const string DessertAlreadyExists = "Dessert with this name already exists";
     public const string DrinkAlreadyExists = "Drink with this name already exists";
     public const string PriceAlredyExists = "Price for this drink and size already exists";
+    public const string IngredientAlredyExists = "Ingredient with this name already exists";
 
     public const string UserNotFound = "User not found";
     public const string FeedbackNotFound = "Feedback not found";
@@ -14,6 +15,7 @@ public class ExceptionMessages
     public const string SizeNotFound = "Size not found";
     public const string CategoryNotFound = "Category not found";
     public const string PriceNotFound = "Price not found";
+    public const string IngredientNotFound = "Ingredient not found";
 
     public const string UserUnauthorized = "User unauthorized";
     public const string InvalidDataInToken = "Invalid data in token";

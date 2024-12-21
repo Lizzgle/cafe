@@ -2,13 +2,12 @@
 using Cafe.Application.Usecases.Prices.Commands.Requests;
 using Cafe.Presentation.Common.Requests.Prices;
 
-namespace Cafe.Presentation.Common.Mappers.Prices
+namespace Cafe.Presentation.Common.Mappers.Prices;
+
+public class CreatePriceRequestToUsecase : Profile
 {
-    public class CreatePriceRequestToUsecase : Profile
+    public CreatePriceRequestToUsecase()
     {
-        public CreatePriceRequestToUsecase()
-        {
-            CreateMap<CreatePriceRequest, CreatePriceCommandRequest>();
-        }
+        CreateMap<CreatePriceRequest, CreatePriceCommandRequest>();
     }
 }

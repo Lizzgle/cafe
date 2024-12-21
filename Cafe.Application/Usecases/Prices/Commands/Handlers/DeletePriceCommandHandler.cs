@@ -3,29 +3,23 @@ using Cafe.Application.Usecases.Prices.Commands.Requests;
 using Cafe.Domain.Abstractions;
 using Event.Application.Common.Exceptions;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Cafe.Application.Usecases.Prices.Commands.Handlers
+namespace Cafe.Application.Usecases.Prices.Commands.Handlers;
+
+public class DeletePriceCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    : IRequestHandler<DeletePriceCommandRequest>
 {
-    public class DeletePriceCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
-        : IRequestHandler<DeletePriceCommandRequest>
+    private readonly IPriceRepository _priceRepository = unitOfWork.PriceRepository;
+
+    public async Task Handle(DeletePriceCommandRequest request, CancellationToken cancellationToken)
     {
-        private readonly IPriceRepository _priceRepository = unitOfWork.PriceRepository;
+        var price = await _priceRepository.GetByIdAsync(request.Id, cancellationToken);
 
-        public async Task Handle(DeletePriceCommandRequest request, CancellationToken cancellationToken)
+        if (price is null)
         {
-            var price = await _priceRepository.GetByIdAsync(request.Id, cancellationToken);
-
-            if (price is null)
-            {
-                throw new NotFoundException(ExceptionMessages.PriceNotFound);                
-            }
-
-            await _priceRepository.DeleteAsync(price, cancellationToken);
+            throw new NotFoundException(ExceptionMessages.PriceNotFound);                
         }
+
+        await _priceRepository.DeleteAsync(price, cancellationToken);
     }
 }
