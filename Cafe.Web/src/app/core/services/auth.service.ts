@@ -3,6 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
+
+import { JwtHelperService } from '@auth0/angular-jwt';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -63,5 +66,20 @@ export class AuthService {
 
   isLoggedIn(): boolean {
       return!!this.getJwtToken();
+  }
+
+  private jwtHelper = new JwtHelperService();
+
+  getUserRoles(): string[] {
+    const token = localStorage.getItem('jwtToken');
+    if (!token) return [];
+
+    const decodedToken = this.jwtHelper.decodeToken(token);
+    return decodedToken?.['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || [];
+  }
+
+  isAdmin(): boolean {
+    const roles = this.getUserRoles();
+    return roles.includes('admin');
   }
 }

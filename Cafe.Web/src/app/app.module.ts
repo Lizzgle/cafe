@@ -13,6 +13,7 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { AccountComponent } from './pages/account/account.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FaqComponent } from './pages/faq/faq.component';
+import { FeedbackComponent } from './pages/feedback/feedback.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { FaqComponent } from './pages/faq/faq.component';
     FooterComponent,
     AccountComponent,
     NavbarComponent,
-    FaqComponent
+    FaqComponent,
+    FeedbackComponent
   ],
   imports: [
     AppRoutingModule,

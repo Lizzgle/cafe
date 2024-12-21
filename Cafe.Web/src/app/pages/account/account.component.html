@@ -29,7 +29,6 @@
   
       <div class="account-actions">
         <button  class="edit-btn" *ngIf="!isEditing" (click)="toggleEdit()">Редактировать</button>
-        <button class="logout-btn" *ngIf="!isEditing" (click)="logout()">Выйти</button>
         <div class="btns" *ngIf="isEditing">
           <button class="save-btn" (click)="saveChanges()">Сохранить</button>
           <button class="cancel-btn" (click)="cancelEdit()">Отмена</button>

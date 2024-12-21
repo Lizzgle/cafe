@@ -10,6 +10,7 @@ import { AccountComponent } from './pages/account/account.component';
 import { MenuModule } from './pages/menu/menu.module';
 import { MenuComponent } from './pages/menu/menu.component';
 import { FaqComponent } from './pages/faq/faq.component';
+import { FeedbackComponent } from './pages/feedback/feedback.component';
 
 
 const routes: Routes = [
@@ -18,7 +19,8 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'account', component:  AccountComponent},
   { path: 'menu', component: MenuComponent},
-  { path: 'faq', component: FaqComponent}
+  { path: 'faq', component: FaqComponent},
+  { path: 'feedbacks', component: FeedbackComponent}
 ];
 
 @NgModule({
