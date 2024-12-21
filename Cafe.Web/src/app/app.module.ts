@@ -11,12 +11,16 @@ import { HomeModule } from './pages/home/home.module';
 
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { AccountComponent } from './pages/account/account.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { FaqComponent } from './pages/faq/faq.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FooterComponent,
     AccountComponent,
+    NavbarComponent,
+    FaqComponent
   ],
   imports: [
     AppRoutingModule,

@@ -15,32 +15,20 @@ interface DrinkWithPrices {
   description: string;
   categoryName: string;
   prices: Price[];
-}
-
-interface Desserts {
-    id: string;
-    name: string;
-    description: string;
-    price: number;
-    calories: number;
+  ingredients: string[];
 }
 
 @Injectable({
   providedIn: 'root',
 })
 
-export class MenuService {
-  private apiUrlForDrinks = 'https://localhost:7111/api/drinks';  // Базовый URL для API
-  private apiUrlForDesserts = 'https://localhost:7111/api/desserts';  // Базовый URL для API
+export class DrinkService {
+  private apiUrl = 'http://localhost:5079/api/drinks';  // Базовый URL для API
 
   constructor(private http: HttpClient) {}
 
   // Получение всех напитков
   getDrinks(): Observable<DrinkWithPrices[]> {
-    return this.http.get<DrinkWithPrices[]>(this.apiUrlForDrinks);
-  }
-
-  getDesserts(): Observable<Desserts[]> {
-    return this.http.get<Desserts[]>(this.apiUrlForDesserts);
+    return this.http.get<DrinkWithPrices[]>(this.apiUrl);
   }
 }

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuService} from '../../../core/services/menu.service';  // Импортируем сервис и типы
+
+import { DessertService } from '../../../core/services/dessert.service';
+import { DrinkService } from '../../../core/services/drink.service';
+
 
 interface Price {
   id: string;
@@ -41,7 +44,7 @@ export class MenuComponent implements OnInit {
   loading: boolean = true; 
   error: string = '';
 
-  constructor(private menuService: MenuService) {}
+  constructor(private dessertService: DessertService, private drinkService:  DrinkService) {}
 
   ngOnInit() {
     this.loadDrinks();
@@ -49,7 +52,7 @@ export class MenuComponent implements OnInit {
   }
 
   loadDrinks() {
-    this.menuService.getDrinks().subscribe(data => {
+    this.drinkService.getDrinks().subscribe(data => {
       this.drinks = data;
       this.groupDrinksByCategory();  // Группируем напитки по категориям
       // this.loading = false;
@@ -59,7 +62,7 @@ export class MenuComponent implements OnInit {
   }
 
   loadDesserts() {
-    this.menuService.getDesserts().subscribe(data => {
+    this.dessertService.getDesserts().subscribe(data => {
       this.desserts = data;
       this.loading = false;
     },

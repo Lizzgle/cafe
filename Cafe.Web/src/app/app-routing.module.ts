@@ -7,6 +7,9 @@ import { AppComponent } from './app.component';
 import { HomeModule } from './pages/home/home.module';
 import { HomeComponent } from './pages/home/home.component';
 import { AccountComponent } from './pages/account/account.component';
+import { MenuModule } from './pages/menu/menu.module';
+import { MenuComponent } from './pages/menu/menu.component';
+import { FaqComponent } from './pages/faq/faq.component';
 
 
 const routes: Routes = [
@@ -14,6 +17,8 @@ const routes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
   { path: 'login', component: LoginComponent },
   { path: 'account', component:  AccountComponent},
+  { path: 'menu', component: MenuComponent},
+  { path: 'faq', component: FaqComponent}
 ];
 
 @NgModule({

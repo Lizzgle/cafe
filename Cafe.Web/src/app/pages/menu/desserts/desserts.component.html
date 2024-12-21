@@ -1,0 +1,23 @@
+<h1 style="text-align-last: center;">Дессерты</h1>
+<div class="row row-cols-1 row-cols-md-3 g-4" style="margin-bottom: 100px;">
+    <!-- Пример десерта -->
+    <div class="col" *ngFor="let dessert of desserts">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">{{ dessert.name }}</h5>
+          <p class="card-text">{{ dessert.description }}</p>
+          <p class="card-text"><strong>Калории:</strong> {{ dessert.calories }} kcal</p>
+          <p class="card-text"><strong>Цена:</strong> {{ dessert.price }} BYN</p>
+          
+          <!-- Ингредиенты -->
+          <div *ngIf="dessert.ingredients && dessert.ingredients.length > 0">
+            <p class="card-text"><strong>Ингредиенты:</strong> {{ dessert.ingredients.join(', ') }}</p>
+          </div>
+          <div *ngIf="!dessert.ingredients || dessert.ingredients.length === 0">
+            <p class="card-text">Ингредиенты не указаны.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
