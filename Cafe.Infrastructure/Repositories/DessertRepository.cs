@@ -21,10 +21,39 @@ public class DessertRepository : BaseRepository<Dessert>, IDessertRepository
             Name = reader["Name"].ToString(),
             Description = reader["Description"].ToString(),
             Calories = (int)reader["Calories"],
-            Price = Convert.ToSingle(reader["Price"])
-    };
+            Price = Convert.ToSingle(reader["Price"]),
+            Ingredients = new List<Ingredient>()
+        };
+
+        dessert.Ingredients = LoadIngredientsForDessert(dessert);
 
         return dessert;
+    }
+
+    private List<Ingredient> LoadIngredientsForDessert(Dessert dessert)
+    {
+        using var connection = new SqlConnection(_connectionString);
+
+        connection.Open();
+
+        var command = connection.CreateCommand();
+        command.CommandText = @"
+        SELECT i.Name 
+        FROM Ingredients i
+        INNER JOIN dessertsIngredients di ON i.Id = di.IngredientId
+        WHERE di.DessertId = @DessertId";
+        command.Parameters.Add(new SqlParameter("@DessertId", dessert.Id));
+
+        using var reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            dessert.Ingredients.Add(new Ingredient()
+            {
+                Name = reader["Name"].ToString(),
+            });
+        }
+
+        return dessert.Ingredients;
     }
 
     protected override SqlCommand CreateInsertCommand(SqlConnection connection, Dessert entity)

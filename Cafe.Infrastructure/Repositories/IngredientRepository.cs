@@ -2,6 +2,7 @@
 using Cafe.Domain.Entities;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using System.Threading;
 
 namespace Cafe.Infrastructure.Repositories;
 
@@ -73,5 +74,37 @@ public class IngredientRepository : BaseRepository<Ingredient>, IIngredientRepos
         command.Parameters.Add(new SqlParameter("@Name", entity.Name));
 
         return command;
+    }
+
+    public async Task AddIngredientToDessert(Guid dessertId, Guid ingredientId, CancellationToken cancellationToken)
+    {
+        using var connection = new SqlConnection(_connectionString);
+
+        await connection.OpenAsync();
+
+        var command = connection.CreateCommand();
+
+        command.CommandText = "INSERT INTO dessertsIngredients (DessertId, IngredientId) VALUES (@DessertId, @IngredientId)";
+
+        command.Parameters.AddWithValue("@DessertId", dessertId);
+        command.Parameters.AddWithValue("@IngredientId", ingredientId);
+
+        await command.ExecuteNonQueryAsync(cancellationToken);
+    }
+
+    public async Task AddIngredientToDrink(Guid drinkId, Guid ingredientId, CancellationToken cancellationToken)
+    {
+        using var connection = new SqlConnection(_connectionString);
+
+        await connection.OpenAsync();
+
+        var command = connection.CreateCommand();
+
+        command.CommandText = "INSERT INTO drinksIngredients (DrinkId, IngredientId) VALUES (@DrinkId, @IngredientId)";
+
+        command.Parameters.AddWithValue("@DrinkId", drinkId);
+        command.Parameters.AddWithValue("@IngredientId", ingredientId);
+
+        await command.ExecuteNonQueryAsync(cancellationToken);
     }
 }

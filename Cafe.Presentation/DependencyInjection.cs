@@ -59,9 +59,9 @@ public static class DependencyInjection
         {
             options.AddDefaultPolicy(builder =>
             {
-                builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
+                builder.WithOrigins("http://127.0.0.1:4200")  // Разрешить доступ с фронтенда
+                       .AllowAnyHeader()
+                       .AllowAnyMethod();
             });
         });
 

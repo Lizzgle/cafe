@@ -13,6 +13,7 @@ internal class CreateDrinkCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
 {
     private readonly IDrinkRepository _drinkRepository = unitOfWork.DrinkRepository;
     private readonly IPriceRepository _priceRepository = unitOfWork.PriceRepository;
+    private readonly IIngredientRepository _ingredientRepository = unitOfWork.IngredientRepository;
 
     public async Task Handle(CreateDrinkCommandRequest request, CancellationToken cancellationToken)
     {
@@ -34,6 +35,33 @@ internal class CreateDrinkCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         drink.Category = category;
 
         await _drinkRepository.CreateAsync(drink, cancellationToken);
+
+        var listIngredients = new List<Ingredient>();
+
+        foreach (var ingredientName in request.Ingredients)
+        {
+            var ingredient = await _ingredientRepository.GetIngredientByName(ingredientName);
+
+            if (ingredient is null)
+            {
+                ingredient = new Ingredient() { Name = ingredientName };
+
+                await _ingredientRepository.CreateAsync(ingredient);
+
+                listIngredients.Add(ingredient);
+
+                await _ingredientRepository.AddIngredientToDrink(drink.Id, ingredient.Id, cancellationToken);
+
+                continue;
+            }
+
+            listIngredients.Add(ingredient);
+
+            await _ingredientRepository.AddIngredientToDrink(drink.Id, ingredient.Id, cancellationToken);
+        }
+
+        drink.Ingredients = listIngredients;
+
 
         var drinkId = drink.Id;
 
