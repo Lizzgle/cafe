@@ -11,4 +11,6 @@ public class CreateDessertCommandRequest : IRequest
     required public int Calories { get; set; }
 
     required public float Price { get; set; }
+
+    public List<string> Ingredients { get; set; } = new List<string>();
 }

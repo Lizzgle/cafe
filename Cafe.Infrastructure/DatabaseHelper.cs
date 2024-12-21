@@ -289,10 +289,10 @@ public class DatabaseHelper
             string createTableQuery = @"
                     CREATE TABLE drinksIngredients (
                         DrinkId NVARCHAR(50),
-                        IngredientId INT,
+                        IngredientId NVARCHAR(50),
                         PRIMARY KEY (DrinkId, IngredientId),
-                        FOREIGN KEY (DrinkId) REFERENCES users(Id) ON DELETE CASCADE,
-                        FOREIGN KEY (IngredientId) REFERENCES roles(Id) ON DELETE CASCADE
+                        FOREIGN KEY (DrinkId) REFERENCES drinks(Id) ON DELETE CASCADE,
+                        FOREIGN KEY (IngredientId) REFERENCES ingredients(Id) ON DELETE CASCADE
                 )";
 
             ExecuteNonQuery(connection, createTableQuery);
@@ -310,10 +310,10 @@ public class DatabaseHelper
             string createTableQuery = @"
                     CREATE TABLE dessertsIngredients (
                         DessertId NVARCHAR(50),
-                        IngredientId INT,
+                        IngredientId NVARCHAR(50),
                         PRIMARY KEY (DessertId, IngredientId),
-                        FOREIGN KEY (DessertId) REFERENCES users(Id) ON DELETE CASCADE,
-                        FOREIGN KEY (IngredientId) REFERENCES roles(Id) ON DELETE CASCADE
+                        FOREIGN KEY (DessertId) REFERENCES desserts(Id) ON DELETE CASCADE,
+                        FOREIGN KEY (IngredientId) REFERENCES ingredients(Id) ON DELETE CASCADE
                 )";
 
             ExecuteNonQuery(connection, createTableQuery);

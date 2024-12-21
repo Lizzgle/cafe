@@ -78,7 +78,7 @@ public static class DependencyInjection
         {
             options.AddPolicy("AllowLocalhost", builder =>
             {
-                builder.WithOrigins("http://localhost:4200")  // Разрешить доступ с фронтенда
+                builder.WithOrigins("http://127.0.0.1:4200")  // Разрешить доступ с фронтенда
                        .AllowAnyHeader()
                        .AllowAnyMethod();
             });

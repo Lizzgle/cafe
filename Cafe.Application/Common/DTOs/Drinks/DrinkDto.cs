@@ -13,4 +13,6 @@ internal class DrinkDto
     required public string CategoryName { get; set; }
 
     public List<PriceDto> Prices { get; set; } = new List<PriceDto>();
+
+    public List<string> Ingredients { get; set; } = new List<string>();
 }

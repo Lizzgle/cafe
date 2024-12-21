@@ -21,7 +21,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("AllowLocalhost");
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 

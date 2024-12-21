@@ -8,6 +8,8 @@ public class CreateDrinkCommandToDrink : Profile
 {
     public CreateDrinkCommandToDrink()
     {
-        CreateMap<CreateDrinkCommandRequest, Drink>();
+        CreateMap<CreateDrinkCommandRequest, Drink>()
+            .ForMember(dest => dest.Ingredients, opt => opt.MapFrom(src =>
+                src.Ingredients.Select(name => new Ingredient { Name = name }).ToList()));
     }
 }

@@ -8,6 +8,8 @@ public class CreateDessertCommandToDessert : Profile
 {
     public CreateDessertCommandToDessert()
     {
-        CreateMap<CreateDessertCommandRequest, Dessert>();
+        CreateMap<CreateDessertCommandRequest, Dessert>()
+            .ForMember(dest => dest.Ingredients, opt => opt.MapFrom(src =>
+                src.Ingredients.Select(name => new Ingredient { Name = name }).ToList()));
     }
 }

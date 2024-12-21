@@ -11,4 +11,6 @@ public class DessertDto
     public int Calories { get; set; }
 
     public float Price { get; set; }
+
+    public List<string> Ingredients { get; set; } = new List<string>();
 }

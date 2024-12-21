@@ -8,6 +8,7 @@ public class DessertToDessertDto : Profile
 {
     public DessertToDessertDto()
     {
-        CreateMap<Dessert, DessertDto>();
+        CreateMap<Dessert, DessertDto>()
+            .ForMember(d => d.Ingredients, opt => opt.MapFrom(d => d.Ingredients.Select(i => i.Name)));
     }
 }
