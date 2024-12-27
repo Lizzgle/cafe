@@ -92,6 +92,22 @@ public class IngredientRepository : BaseRepository<Ingredient>, IIngredientRepos
         await command.ExecuteNonQueryAsync(cancellationToken);
     }
 
+    public async Task RemoveIngredientFromDessert(Guid dessertId, Guid ingredientId, CancellationToken cancellationToken)
+    {
+        using var connection = new SqlConnection(_connectionString);
+
+        await connection.OpenAsync();
+
+        var command = connection.CreateCommand();
+
+        command.CommandText = "DELETE FROM dessertsIngredients WHERE DessertId = @DessertId AND IngredientId = @IngredientId;";
+
+        command.Parameters.AddWithValue("@DessertId", dessertId);
+        command.Parameters.AddWithValue("@IngredientId", ingredientId);
+
+        await command.ExecuteNonQueryAsync(cancellationToken);
+    }
+
     public async Task AddIngredientToDrink(Guid drinkId, Guid ingredientId, CancellationToken cancellationToken)
     {
         using var connection = new SqlConnection(_connectionString);
@@ -106,5 +122,55 @@ public class IngredientRepository : BaseRepository<Ingredient>, IIngredientRepos
         command.Parameters.AddWithValue("@IngredientId", ingredientId);
 
         await command.ExecuteNonQueryAsync(cancellationToken);
+    }
+
+    public async Task RemoveIngredientFroDrink(Guid drinkId, Guid ingredientId, CancellationToken cancellationToken)
+    {
+        using var connection = new SqlConnection(_connectionString);
+
+        await connection.OpenAsync();
+
+        var command = connection.CreateCommand();
+
+        command.CommandText = "DELETE FROM drinksIngredients WHERE DrinkId = @DrinkId AND IngredientId = @IngredientId;";
+
+        command.Parameters.AddWithValue("@DrinkId", drinkId);
+        command.Parameters.AddWithValue("@IngredientId", ingredientId);
+
+        await command.ExecuteNonQueryAsync(cancellationToken);
+    }
+
+    public async Task<List<Ingredient>> GetIngredientForDrink(Guid drinkId, CancellationToken token)
+    {
+        using var connection = new SqlConnection(_connectionString);
+
+        await connection.OpenAsync(token);
+
+        string query = @"
+    SELECT i.Id, i.Name
+    FROM Ingredients i
+    WHERE i.Id IN (
+        SELECT di.IngredientId
+        FROM drinksIngredients di
+        WHERE di.DrinkId = @DrinkId
+    )";
+
+
+        var ingredients = new List<Ingredient>();
+
+        using (var command = new SqlCommand(query, connection))
+        {
+            command.Parameters.AddWithValue("@DrinkId", drinkId);
+
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    ingredients.Add(MapToEntity(reader));
+                }
+            }
+        }
+
+        return ingredients;
     }
 }

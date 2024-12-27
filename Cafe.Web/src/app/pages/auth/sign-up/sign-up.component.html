@@ -1,0 +1,66 @@
+<div class="registration-form">
+    <h2>Registration</h2>
+    
+    <!-- Сообщение об ошибке -->
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+    
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="login">Login</label>
+        <input 
+          type="text" 
+          id="login" 
+          name="login" 
+          [(ngModel)]="formData.login" 
+          placeholder="Enter your login" 
+          required 
+          class="form-control" 
+        />
+      </div>
+  
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input 
+          type="text" 
+          id="name" 
+          name="name" 
+          [(ngModel)]="formData.name" 
+          placeholder="Enter your name" 
+          required 
+          class="form-control" 
+        />
+      </div>
+  
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          [(ngModel)]="formData.password" 
+          placeholder="Enter your password" 
+          required 
+          class="form-control" 
+        />
+      </div>
+  
+      <div class="form-group">
+        <label for="dateOfBirth">Date Of Birth</label>
+        <input 
+          type="date" 
+          id="dateOfBirth" 
+          name="dateOfBirth" 
+          [(ngModel)]="formData.dateOfBirth" 
+          required 
+          class="form-control" 
+        />
+      </div>
+    
+      <div class="form-button">
+        <button type="submit" class="btn btn-primary">Register</button>
+      </div>
+    </form>
+  </div>
+  

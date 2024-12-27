@@ -1,0 +1,17 @@
+<div class="container">
+    <h2>Список пользователей</h2>
+    <div class="list-group" >
+      <div *ngFor="let user of users" class="list-group-item" style="margin-top: 20px;">
+        <h5>{{ user.login }}</h5>
+        <p>{{ user.name }}</p>
+        <button (click)="goToUserDetail(user.id)" class="btn btn-primary">Подробнее</button>
+        <!-- <button *ngIf="isAdmin" class="btn btn-outline-danger" (click)="deleteUser(user.id)">
+            Удалить
+          </button> -->
+          <button *ngIf="isModerator" class="btn btn-outline-danger" (click)="deleteUser(user.id)">
+            Удалить
+          </button>
+      </div>
+    </div>
+  </div>
+  

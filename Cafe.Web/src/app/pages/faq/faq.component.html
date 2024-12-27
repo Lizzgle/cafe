@@ -1,0 +1,15 @@
+<div class="accordion" id="accordionFlushExample" style="margin: 100px 20vw;">
+    <div class="accordion-item" *ngFor="let faq of faqs; let i = index">
+      <h2 class="accordion-header" id="heading{{faq.id}}">
+        <button class="accordion-button" type="button" (click)="toggleCollapse(i)">
+          {{ faq.question }}
+        </button>
+      </h2>
+      <div [id]="'flush-collapse' + faq.id" class="accordion-collapse collapse" [ngClass]="{'show': expanded[i]}">
+        <div class="accordion-body">
+          {{ faq.answer }}
+        </div>
+      </div>
+    </div>
+  </div>
+  

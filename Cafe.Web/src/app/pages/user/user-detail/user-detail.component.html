@@ -1,0 +1,13 @@
+<div class="container">
+    <h2>Информация о пользователе</h2>
+    <div *ngIf="user" style="margin-top: 20px; margin-bottom: 40vh;">
+      <h3>{{ user.login }}</h3>
+      <p><strong>Email:</strong> {{ user.name }}</p>
+      <p><strong>Возраст:</strong> {{ user.dateOfBirth }}</p>
+      <p><strong>Роль:</strong>
+        <span *ngFor="let role of user.roles"> | {{ role.name }}</span>
+    </p>
+    
+    </div>
+  </div>
+  

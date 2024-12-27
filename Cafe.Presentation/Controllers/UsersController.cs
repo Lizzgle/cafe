@@ -23,6 +23,7 @@ public class UsersController(IMediator mediator, IMapper mapper) : ControllerBas
         return Ok(eventdto);
     }
 
+
     [HttpGet("me")]
     [Authorize(Policy = PolicyTypes.ClientPolicy)]
     public async Task<IActionResult> GetMeByIdAsync(CancellationToken token)

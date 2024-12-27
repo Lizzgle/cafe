@@ -17,6 +17,8 @@ public static class DependencyInjection
     {
         services.ConfigureOptions();
 
+        services.ConfigureServices();
+
         services.ConfigureAuthorization(configuration);
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
@@ -55,17 +57,32 @@ public static class DependencyInjection
             });
         });
 
+        //services.AddCors(options =>
+        //{
+        //    options.AddDefaultPolicy(builder =>
+        //    {
+        //        builder.AllowAnyOrigin()
+        //            .AllowAnyMethod()
+        //            .AllowAnyHeader();
+        //    });
+        //});
+
+        services.AddScoped<IJwtProvider, JwtProvider>();
+
+        return services;
+    }
+
+    private static IServiceCollection ConfigureServices(this IServiceCollection services)
+    {
         services.AddCors(options =>
         {
-            options.AddDefaultPolicy(builder =>
+            options.AddPolicy("AllowLocalhost", builder =>
             {
                 builder.WithOrigins("http://127.0.0.1:4200")  // Разрешить доступ с фронтенда
                        .AllowAnyHeader()
                        .AllowAnyMethod();
             });
         });
-
-        services.AddScoped<IJwtProvider, JwtProvider>();
 
         return services;
     }

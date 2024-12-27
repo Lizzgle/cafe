@@ -1,5 +1,6 @@
 ﻿using Cafe.Domain.Abstractions;
 using Cafe.Domain.Entities;
+using Cafe.Domain.Models;
 using Microsoft.Data.SqlClient;
 using System.Data;
 
@@ -81,5 +82,35 @@ public class DrinkRepository : BaseRepository<Drink>, IDrinkRepository
         }
 
         return null;
+    }
+
+    public List<DrinkDetail> GetDrinkDetails()
+    {
+        List<DrinkDetail> drinkDetails = new List<DrinkDetail>();
+
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            connection.Open();
+            string query = "SELECT * FROM vw_DrinkDetails"; // Используем представление
+
+            using (SqlCommand command = new SqlCommand(query, connection))
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    drinkDetails.Add(new DrinkDetail
+                    {
+                        DrinkId = Guid.Parse(reader["Id"].ToString()),
+                        Name = reader["DrinkName"] == DBNull.Value ? null : (string)reader["DrinkName"],
+                        Description = reader["Description"] == DBNull.Value ? null : reader["Description"].ToString(),
+                        CategoryName = (string)reader["Name"],
+                        SizesWithPrices = (string)reader["SizesWithPrices"],
+                        Ingredients = reader["Ingredients"] == DBNull.Value ? null : (string)reader["Ingredients"]
+                    });
+                }
+            }
+        }
+
+        return drinkDetails;
     }
 }

@@ -1,0 +1,23 @@
+/* Кастомный стиль для кнопки аккордеона */
+.custom-accordion-button {
+    background-color: #6c757d; /* Серый фон */
+    color: white; /* Белый текст */
+    border: none; /* Убираем рамку */
+  }
+  
+  .custom-accordion-button:focus {
+    box-shadow: none; /* Убираем подсветку при фокусе */
+  }
+  
+  .custom-accordion-button.collapsed {
+    background-color: #6c757d; /* Серый фон для закрытого аккордеона */
+  }
+  
+  .custom-accordion-button:not(.collapsed) {
+    background-color: #495057; /* Немного темнее серый фон для открытого аккордеона */
+  }
+
+.accordion {
+    --bs-accordion-active-bg: #ddd;
+}
+  

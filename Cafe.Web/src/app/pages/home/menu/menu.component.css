@@ -1,0 +1,61 @@
+.menu-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+  }
+
+  .text-right {
+    background-color: #6c757d; /* Серый цвет фона */
+    color: #ffffff;           /* Белый цвет текста */
+    padding: 5px 15px;        /* Внутренние отступы */
+    border-top-left-radius: 20px; /* Закругление верхнего левого угла */
+    border-bottom-left-radius: 20px; /* Закругление нижнего левого угла */
+    border-top-right-radius: 0; /* Без закругления справа */
+    border-bottom-right-radius: 0; /* Без закругления справа */  /* Закругленные углы для создания овала */
+    width: 25vw;
+    display: inline-block;    /* Чтобы овал обрамлял текст */
+    font-size: 26px;          /* Размер шрифта */
+    font-weight: bold;        /* Жирный текст */
+    float: right;  
+}
+  
+  .category-name {
+    font-size: 28px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-top: 20px;
+  }
+  
+  .item-name, .size-name, .price, .calories {
+    font-size: 22px;
+    width: 20vw;
+  }
+  
+  .price {
+    font-weight: bold;
+    text-align: end;
+  }
+
+  .calories {
+    text-align: end;
+  }
+
+  .size-name {
+    text-align: center;
+  }
+
+  .description {
+    font-size: 20px;
+    padding: 1px;
+    width: 40vw;
+    text-align: center;
+  }
+
+  .th-block {
+    padding: 10px 0 0 0;
+    width: 100%;
+  }
+
+  .th {
+    font-weight: bold;
+  }

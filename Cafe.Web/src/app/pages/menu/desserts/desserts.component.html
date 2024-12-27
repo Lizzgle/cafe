@@ -1,0 +1,62 @@
+<h1 style="text-align-last: center;">Десерты</h1>
+<div *ngIf="isAdmin" class="new-dessert-form" style="margin: 100px;">
+  <h3>Create New Dessert</h3>
+  <form (ngSubmit)="createDessert()">
+    <div class="form-group">
+      <label for="new-name">Name</label>
+      <input id="new-name" type="text" [(ngModel)]="newDessert.name" name="newName" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+      <label for="new-description">Description</label>
+      <textarea id="new-description" [(ngModel)]="newDessert.description" name="newDescription" class="form-control"
+        required></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="new-calories">Calories</label>
+      <input id="new-calories" type="number" [(ngModel)]="newDessert.calories" name="newCalories" class="form-control"
+        required />
+    </div>
+
+    <div class="form-group">
+      <label for="new-price">Price</label>
+      <input id="new-price" type="number" [(ngModel)]="newDessert.price" name="newPrice" class="form-control"
+        required />
+    </div>
+
+    <div class="form-group">
+      <label for="ingredient-input">Ingredients</label>
+      <input id="ingredient-input" name="ingredientInput" class="form-control" [(ngModel)]="ingredientInput"
+        placeholder="Enter ingredients separated by commas" (ngModelChange)="updateIngredients()" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Create Dessert</button>
+</form>
+</div>
+
+<div class="row row-cols-1 row-cols-md-3 g-4" style="margin-bottom: 100px;">
+  <!-- Пример десерта -->
+  <div class="col" *ngFor="let dessert of desserts">
+    <div class="card h-100">
+      <div class="card-body">
+        <h5 class="card-title">{{ dessert.name }}</h5>
+        <p class="card-text">{{ dessert.description }}</p>
+        <p class="card-text"><strong>Калории:</strong> {{ dessert.calories }} kcal</p>
+        <p class="card-text"><strong>Цена:</strong> {{ dessert.price }} BYN</p>
+
+        <!-- Ингредиенты -->
+        <div *ngIf="dessert.ingredients && dessert.ingredients.length > 0">
+          <p class="card-text"><strong>Ингредиенты:</strong> {{ dessert.ingredients.join(', ') }}</p>
+        </div>
+        <div *ngIf="!dessert.ingredients || dessert.ingredients.length === 0">
+          <p class="card-text">Ингредиенты не указаны.</p>
+        </div>
+
+        <button *ngIf="isAdmin" class="btn btn-outline-info" (click)="openDessert(dessert.id)">Открыть</button>
+        <button *ngIf="isAdmin" class="btn btn-outline-danger" (click)="deleteDessert(dessert.id)">Удалить</button>
+
+      </div>
+    </div>
+  </div>
+</div>
