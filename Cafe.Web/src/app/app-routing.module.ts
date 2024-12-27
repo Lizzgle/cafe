@@ -12,6 +12,13 @@ import { MenuComponent } from './pages/menu/menu.component';
 import { FaqComponent } from './pages/faq/faq.component';
 import { FeedbackComponent } from './pages/feedback/feedback.component';
 
+import { UserDetailComponent } from './pages/user/user-detail/user-detail.component';
+
+import { UsersListComponent } from './pages/user/list-users/list-users.component';
+
+import { DessertDetailComponent } from './pages/menu/dessert-detail/dessert-detail.component';
+
+import { DrinkDetailComponent } from './pages/menu/drink-detail/drink-detail.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -19,8 +26,12 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'account', component:  AccountComponent},
   { path: 'menu', component: MenuComponent},
+  { path: 'menu/dessert/:id', component: DessertDetailComponent },
+  { path: 'menu/drink/:id', component: DrinkDetailComponent },
   { path: 'faq', component: FaqComponent},
-  { path: 'feedbacks', component: FeedbackComponent}
+  { path: 'feedbacks', component: FeedbackComponent},
+  { path: 'users', component: UsersListComponent },
+  { path: 'user/:id', component: UserDetailComponent }
 ];
 
 @NgModule({

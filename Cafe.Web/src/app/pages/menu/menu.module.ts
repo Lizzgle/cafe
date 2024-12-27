@@ -1,9 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { MenuComponent } from './menu.component';
 import { DrinksComponent } from './drinks/drinks.component';
 import { DessertsComponent } from './desserts/desserts.component';
+import { DessertDetailComponent } from './dessert-detail/dessert-detail.component';
+import { CreateDrinkComponent } from './create-drink/create-drink.component';
+import { DrinkDetailComponent } from './drink-detail/drink-detail.component';
 
 
 
@@ -11,15 +15,20 @@ import { DessertsComponent } from './desserts/desserts.component';
   declarations: [
     MenuComponent,
     DrinksComponent,
-    DessertsComponent
+    DessertsComponent,
+    DessertDetailComponent,
+    CreateDrinkComponent,
+    DrinkDetailComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule
   ],
   exports: [
     MenuComponent,
     DrinksComponent,
-    DessertsComponent
+    DessertsComponent,
+    DessertDetailComponent,
   ]
 })
 export class MenuModule { }

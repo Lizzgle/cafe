@@ -1,0 +1,64 @@
+<div class="form-container" style="margin: 100px;">
+    <h2>Create Drink</h2>
+    <form (ngSubmit)="createDrink()">
+        <!-- Name -->
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input id="name" class="form-control" [(ngModel)]="newDrink.name" name="name" placeholder="Enter drink name"
+                required />
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" class="form-control" [(ngModel)]="newDrink.description" name="description"
+                placeholder="Enter drink description" required></textarea>
+        </div>
+
+        <!-- Category Name -->
+        <!-- <div class="form-group">
+            <label for="categoryName">Category</label>
+            <input id="categoryName" class="form-control" [(ngModel)]="newDrink.categoryName" name="categoryName"
+                placeholder="Enter category name" required />
+        </div> -->
+
+        <div class="form-group">
+            <label for="categoryName">Category</label>
+            <select id="categoryName" class="form-control" [(ngModel)]="newDrink.categoryName" name="categoryName" required>
+                <option *ngFor="let size of availableCategories" [value]="size">{{ size }}</option>
+            </select>
+        </div>
+
+
+        <!-- Prices -->
+        <div class="form-group">
+            <label for="sizeName">Size</label>
+            <select id="sizeName" class="form-control" [(ngModel)]="sizeName" name="sizeName" required>
+                <option *ngFor="let size of availableSizes" [value]="size">{{ size }}</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="cost">Cost</label>
+            <input id="cost" class="form-control" type="number" [(ngModel)]="sizeCost" name="cost"
+                placeholder="Enter cost for selected size" required />
+        </div>
+
+        <button type="button" class="btn btn-secondary" (click)="addPrice()">Add Price</button>
+
+        <ul>
+            <li *ngFor="let price of newDrink.prices">
+                {{ price.sizeName }}: {{ price.cost | currency }}
+            </li>
+        </ul>
+
+        <!-- Ingredients -->
+        <div class="form-group">
+            <label for="ingredients">Ingredients</label>
+            <input id="ingredients" class="form-control" [(ngModel)]="ingredientInput" name="ingredients"
+                placeholder="Enter ingredients separated by commas" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create Drink</button>
+    </form>
+</div>

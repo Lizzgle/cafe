@@ -8,12 +8,15 @@ import { AppComponent } from './app.component';
 import { FooterComponent } from './components/footer/footer';
 import { AuthModule } from './pages/auth/auth.module';
 import { HomeModule } from './pages/home/home.module';
+import { MenuModule } from './pages/menu/menu.module';
 
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { AccountComponent } from './pages/account/account.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FaqComponent } from './pages/faq/faq.component';
 import { FeedbackComponent } from './pages/feedback/feedback.component';
+import { UsersListComponent } from './pages/user/list-users/list-users.component';
+import { UserDetailComponent } from './pages/user/user-detail/user-detail.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +25,9 @@ import { FeedbackComponent } from './pages/feedback/feedback.component';
     AccountComponent,
     NavbarComponent,
     FaqComponent,
-    FeedbackComponent
+    FeedbackComponent,
+    UsersListComponent,
+    UserDetailComponent
   ],
   imports: [
     AppRoutingModule,
@@ -30,7 +35,8 @@ import { FeedbackComponent } from './pages/feedback/feedback.component';
     HttpClientModule,
     FormsModule,
     AuthModule,
-    HomeModule,  // Add HomeModule to import the HomeComponent and its children
+    HomeModule,
+    // MenuModule  // Add HomeModule to import the HomeComponent and its children
   ],
   providers: [
     {

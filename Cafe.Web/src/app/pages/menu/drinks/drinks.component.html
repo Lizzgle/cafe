@@ -1,32 +1,37 @@
 <h1 style="text-align-last: center;">Напитки</h1>
+<div *ngIf="isAdmin">
+  <app-create-drink></app-create-drink>
+</div>
 <div class="row row-cols-1 row-cols-md-3 g-4" style="margin-bottom: 100px;">
-    <!-- Пример продукта -->
-    <div class="col" *ngFor="let product of drinks">
-      <div class="card h-100">
-        <div class="card-body">
-          <h5 class="card-title">{{ product.name }}</h5>
-          <p class="card-text">{{ product.description }}</p>
-          <p class="card-text"><strong>Категория:</strong> {{ product.categoryName }}</p>
-          
-          <!-- Цены для разных размеров -->
-          <div>
-            <p class="card-text"><strong>Размеры и цены:</strong></p>
-            <ul>
-              <li *ngFor="let price of product.prices">
-                <b>{{ price.sizeName }}</b> -  {{ price.cost }} BYN
-              </li>
-            </ul>
-          </div>
-  
-          <!-- Ингредиенты -->
-        <div *ngIf="product.ingredients && product.ingredients.length > 0">
-            <p class="card-text"><strong>Ингредиенты:</strong> {{ product.ingredients.join(', ') }}</p>
-          </div>
-          <div *ngIf="!product.ingredients || product.ingredients.length === 0">
-            <p class="card-text">Ингредиенты не указаны.</p>
-          </div>
+  <!-- Пример продукта -->
+  <div class="col" *ngFor="let product of drinks">
+    <div class="card h-100">
+      <div class="card-body">
+        <h5 class="card-title">{{ product.name }}</h5>
+        <p class="card-text">{{ product.description }}</p>
+        <p class="card-text"><strong>Категория:</strong> {{ product.categoryName }}</p>
+
+        <!-- Цены для разных размеров -->
+        <div>
+          <p class="card-text"><strong>Размеры и цены:</strong></p>
+          <ul>
+            <li *ngFor="let price of product.prices">
+              <b>{{ price.sizeName }}</b> - {{ price.cost }} BYN
+            </li>
+          </ul>
         </div>
+
+        <!-- Ингредиенты -->
+        <div *ngIf="product.ingredients && product.ingredients.length > 0">
+          <p class="card-text"><strong>Ингредиенты:</strong> {{ product.ingredients.join(', ') }}</p>
+        </div>
+        <div *ngIf="!product.ingredients || product.ingredients.length === 0">
+          <p class="card-text">Ингредиенты не указаны.</p>
+        </div>
+
+        <button *ngIf="isAdmin" class="btn btn-outline-info" (click)="openDrink(product.id)">Открыть</button>
+        <button *ngIf="isAdmin" class="btn btn-outline-danger" (click)="deleteDrink(product.id)">Удалить</button>
       </div>
     </div>
   </div>
-  
+</div>

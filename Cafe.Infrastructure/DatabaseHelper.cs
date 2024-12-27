@@ -333,7 +333,7 @@ public class DatabaseHelper
                 UserId NVARCHAR(50) NOT NULL,
                 Action NVARCHAR(50) NOT NULL,
                 ActionTime DATETIME DEFAULT GETDATE(),
-                FOREIGN KEY (UserId) REFERENCES users(Id)
+                FOREIGN KEY (UserId) REFERENCES users(Id) ON DELETE CASCADE
             )";
 
             ExecuteNonQuery(connection, createLogTableQuery);
@@ -413,6 +413,45 @@ END;
         END;";
 
             ExecuteNonQuery(connection, createFunctionQuery);
+        }
+    }
+
+    public static void CreateDrinkView(string connectionString, string databaseName)
+    {
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            connection.ChangeDatabase(databaseName);
+
+            string createQuery = @"
+        CREATE VIEW vw_DrinkDetails AS
+SELECT 
+    d.Id,
+    d.Name AS DrinkName,
+    d.Description,
+    c.Name,
+    (
+        SELECT s.Name + ' (' + CAST(p.Cost AS NVARCHAR(10)) + ')' 
+        FROM prices p
+        LEFT JOIN sizes s ON p.SizeId = s.Id
+        WHERE p.DrinkId = d.Id
+        FOR XML PATH(''), TYPE
+    ).value('.', 'NVARCHAR(MAX)') AS SizesWithPrices,
+    (
+        SELECT i.Name + ', '
+        FROM drinksIngredients di
+        LEFT JOIN Ingredients i ON di.IngredientId = i.Id
+        WHERE di.DrinkId = d.Id
+        FOR XML PATH(''), TYPE
+    ).value('.', 'NVARCHAR(MAX)') AS Ingredients
+FROM 
+    Drinks d
+LEFT JOIN 
+    categories c ON d.CategoryId = c.Id;
+
+";
+
+            ExecuteNonQuery(connection, createQuery);
         }
     }
 

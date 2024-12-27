@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Cafe.Application.Usecases.Desserts.Commands.Requests;
 using Cafe.Application.Usecases.Drinks.Commands.Requests;
 using Cafe.Application.Usecases.Drinks.Queries.Requests;
 using Cafe.Presentation.Common.Requests.Drinks;
@@ -61,6 +62,28 @@ public class DrinksController(IMediator mediator, IMapper mapper) : ControllerBa
     public async Task<IActionResult> DeleteDrinkAsync([FromRoute] Guid id, CancellationToken token)
     {
         var request = new DeleteDrinkCommandRequest() { Id = id };
+
+        await mediator.Send(request, token);
+
+        return Ok();
+    }
+
+    [HttpPatch("{id}")]
+    [Authorize(Policy = PolicyTypes.AdminPolicy)]
+    public async Task<IActionResult> AddIngredientAsync([FromRoute] Guid id, [FromBody] string ingredient, CancellationToken token)
+    {
+        var request = new AddIngredientToDrinkCommandRequest() { DrinkId = id, Name = ingredient };
+
+        await mediator.Send(request, token);
+
+        return Ok();
+    }
+
+    [HttpDelete("ingredients/{id}")]
+    [Authorize(Policy = PolicyTypes.AdminPolicy)]
+    public async Task<IActionResult> DeleteIngredientAsync([FromRoute] Guid id, [FromBody] string ingredient, CancellationToken token)
+    {
+        var request = new RemoveIngredientFromDrinkRequest() { DrinkId = id, Name = ingredient };
 
         await mediator.Send(request, token);
 

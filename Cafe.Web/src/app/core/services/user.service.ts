@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
     providedIn: 'root'
 })
 export class UserService {
-    private apiUrl = 'https://localhost:7111/api/users';
+    private apiUrl = 'http://localhost:5079/api/users';
 
     constructor(private http: HttpClient) {}
 
@@ -26,8 +26,8 @@ export class UserService {
         return this.http.put<[]>(`${this.apiUrl}/${user.id}`, user);
     }
 
-    deleteUser(id: string): Observable<any> {
-        return this.http.delete<[]>(`${this.apiUrl}/${id}`);
+    deleteUser(userId: string): Observable<any> {
+        return this.http.delete<[]>(`${this.apiUrl}/${userId}`);
     }
     
 }

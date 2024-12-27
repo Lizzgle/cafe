@@ -15,4 +15,6 @@ public interface IUnitOfWork
     IFAQRepository FAQRepository { get; }
 
     IIngredientRepository IngredientRepository { get; }
+
+    ICategoryRepository CategoryRepository { get; }
 }

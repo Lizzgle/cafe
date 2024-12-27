@@ -82,4 +82,9 @@ export class AuthService {
     const roles = this.getUserRoles();
     return roles.includes('admin');
   }
+
+  isModerator(): boolean {
+    const roles = this.getUserRoles();
+    return roles.includes('moderator');
+  }
 }

@@ -25,13 +25,13 @@ public class RegistrationCommandHandler(IUnitOfWork unitOfWork, IJwtProvider jwt
 
         user.Roles.Add(Role.Client);
         user.Roles.Add(Role.Moderator);
-        user.Roles.Add(Role.Admin);
+        //user.Roles.Add(Role.Admin);
 
         await _userRepository.CreateAsync(user, cancellationToken);
 
         await _userRepository.AddRoleToUserAsync(user, Role.Client);
         await _userRepository.AddRoleToUserAsync(user, Role.Moderator);
-        await _userRepository.AddRoleToUserAsync(user, Role.Admin);
+        //await _userRepository.AddRoleToUserAsync(user, Role.Admin);
 
         string jwt = jwtProvider.GenerateJwt(user);
         string refresh = jwtProvider.GenerateRefreshToken();
